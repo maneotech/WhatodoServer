@@ -7,20 +7,22 @@ exports.authorizeIpAddresses = exports.authorize = void 0;
 const lodash_1 = __importDefault(require("lodash"));
 const request_errors_service_1 = __importDefault(require("../services/request-errors.service"));
 const localhostIps = ['::1', '127.0.0.1', 'localhost'];
-function authorize(roles) {
-    let _roles = [];
+function authorize( /*roles : UserRole | UserRole[]*/) {
+    /*let _roles = []
     if (Array.isArray(roles)) {
         _roles = [...roles];
+    } else {
+        _roles = [roles]
     }
-    else {
-        _roles = [roles];
-    }
-    return function (req, res, next) {
+    return function (req : Request, res : Response, next) {
         const user = req.user;
         if (!user || !user.role)
-            return request_errors_service_1.default.accessForbidden(req, res);
+            return RequestErrors.accessForbidden(req, res);
         if (_roles.indexOf(user.role.toString()) < 0)
-            return request_errors_service_1.default.accessForbidden(req, res);
+            return RequestErrors.accessForbidden(req, res);
+        next();
+    };*/
+    return function (req, res, next) {
         next();
     };
 }

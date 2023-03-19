@@ -28,18 +28,17 @@ class UserLoginService {
             };
         });
     }
-    static login(username, password, role) {
+    static login(email, password) {
         return __awaiter(this, void 0, void 0, function* () {
             let response = user_constant_1.UserLoginRequestError.NO_ERROR;
-            if (!username || !username.length)
+            if (!email || !email.length)
                 return user_constant_1.UserLoginRequestError.ID_EMPTY;
             if (!password || !password.length)
                 return user_constant_1.UserLoginRequestError.ID_EMPTY;
-            username = username.trim();
-            if (mail_service_1.MailsService.isValid(username)) {
-                username = mail_service_1.MailsService.formatMail(username);
+            if (mail_service_1.MailsService.isValid(email)) {
+                email = mail_service_1.MailsService.formatMail(email);
             }
-            const selectors = { username: username, password: user_service_1.default.hashPassword(password), role: role };
+            const selectors = { email: email, password: user_service_1.default.hashPassword(password) };
             const user = yield userRepository.getOne(selectors, [], []);
             if (!user)
                 return user_constant_1.UserLoginRequestError.ID_INVALID;

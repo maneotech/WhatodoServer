@@ -18,13 +18,7 @@ const user_register_service_1 = require("../../services/user/user.register.servi
 function register(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
-        const role = req.params.role;
-        body.role = role;
-        if (body.code != "carotte07*") {
-            const response = { success: false, status: 400, message: "Only bêta-testeurs are allowed (with good code)", data: null, error: 0 };
-            return request_service_1.default.send(res, response);
-        }
-        const response = yield user_register_service_1.UserRegisterService.register(body, role);
+        const response = yield user_register_service_1.UserRegisterService.register(body);
         request_service_1.default.send(res, response);
     });
 }

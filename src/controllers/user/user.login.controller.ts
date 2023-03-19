@@ -5,7 +5,6 @@ import { UserLoginService } from '../../services/user/user.login.service';
 
 export async function login(req : Request, res: Response){
     const body = req.body;
-    const role = req.params.role as UserRole;
-    const response = await UserLoginService.login(body.username, body.password, role);
+    const response = await UserLoginService.login(body.email, body.password);
     RequestService.send(res, response);
 }

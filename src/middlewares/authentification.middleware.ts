@@ -7,7 +7,6 @@ import UserRepository from '../repositories/user/user.repository';
 import { AuthentificationService } from '../services/autentification.service';
 import RequestErrors from '../services/request-errors.service';
 import { UserTokenService } from '../services/user/user.token.service';
-import { UtilitiesService } from '../services/utilities.service';
 
 const userRepository = new UserRepository()
 
@@ -23,7 +22,7 @@ declare global {
 }
 
 async function getUser(userId : string) : Promise<IUserModel> {
-    return await userRepository.getById(userId, [], ["+password", "+role", "+email"]);
+    return await userRepository.getById(userId, [], ["+password", "+email"]);
 }
 
 

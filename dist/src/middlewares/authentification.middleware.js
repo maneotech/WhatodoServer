@@ -21,7 +21,7 @@ const user_token_service_1 = require("../services/user/user.token.service");
 const userRepository = new user_repository_1.default();
 function getUser(userId) {
     return __awaiter(this, void 0, void 0, function* () {
-        return yield userRepository.getById(userId, [], ["+password", "+role", "+email"]);
+        return yield userRepository.getById(userId, [], ["+password", "+email"]);
     });
 }
 function authentificate(required = true, ignoreExpiration = false) {

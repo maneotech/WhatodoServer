@@ -10,13 +10,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRegisterService = void 0;
-const user_constant_1 = require("../../constants/user/user.constant");
 const user_admin_service_1 = require("./user.admin.service");
 class UserRegisterService {
-    static register(data, role) {
+    static register(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            if (role != user_constant_1.UserRole.user)
-                return user_constant_1.UserRequestError.ROLE_IS_INVALID;
             return user_admin_service_1.UserAdminService.create(data);
         });
     }

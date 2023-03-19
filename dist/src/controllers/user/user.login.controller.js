@@ -18,8 +18,7 @@ const user_login_service_1 = require("../../services/user/user.login.service");
 function login(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
-        const role = req.params.role;
-        const response = yield user_login_service_1.UserLoginService.login(body.username, body.password, role);
+        const response = yield user_login_service_1.UserLoginService.login(body.email, body.password);
         request_service_1.default.send(res, response);
     });
 }

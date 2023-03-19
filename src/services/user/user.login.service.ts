@@ -16,21 +16,20 @@ export class UserLoginService {
             user : user
         }
     }
-    static async login(username : string, password : string, role : UserRole) : Promise<IResponse> {
+    static async login(email : string, password : string) : Promise<IResponse> {
         let response : IResponse = UserLoginRequestError.NO_ERROR;
 
-        if (!username || !username.length)
+        if (!email || !email.length)
             return UserLoginRequestError.ID_EMPTY;
 
         if (!password || !password.length)
             return UserLoginRequestError.ID_EMPTY;
 
-        username = username.trim();
-        if (MailsService.isValid(username)) {
-            username = MailsService.formatMail(username);
+        if (MailsService.isValid(email)) {
+            email = MailsService.formatMail(email);
         }
 
-        const selectors = {username: username, password : UserService.hashPassword(password), role : role };
+        const selectors = {email: email, password : UserService.hashPassword(password) };
         const user = await userRepository.getOne(selectors, [], []);
 
         if (!user)

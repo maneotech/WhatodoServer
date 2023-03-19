@@ -1,12 +1,11 @@
 import { Request, Response } from 'express';
 import _ from 'lodash'
-import { UserRole } from '../constants/user/user.constant';
 import RequestErrors from '../services/request-errors.service';
 
 const localhostIps = ['::1', '127.0.0.1', 'localhost'];
 
-export function authorize(roles : UserRole | UserRole[]) {
-    let _roles = []
+export function authorize(/*roles : UserRole | UserRole[]*/) {
+    /*let _roles = []
     if (Array.isArray(roles)) {
         _roles = [...roles];
     } else {
@@ -19,7 +18,11 @@ export function authorize(roles : UserRole | UserRole[]) {
         if (_roles.indexOf(user.role.toString()) < 0)
             return RequestErrors.accessForbidden(req, res);
         next();
-    };
+    };*/
+
+    return function (req: Request, res: Response, next) {
+        next();
+    }
 }
 
 
@@ -27,7 +30,7 @@ export function authorizeIpAddresses(ips, localhostEnabled = true) {
     if (_.isString(ips)) {
         ips = [ips];
     }
-    return function (req : Request, res  : Response, next) {
+    return function (req: Request, res: Response, next) {
         let clientIp = req.clientIp;
         if (ips) {
             if (ips.includes(clientIp))

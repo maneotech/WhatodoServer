@@ -20,13 +20,7 @@ export enum UserSex {
 
 
 export const UserFieldModelRequired = {
-    [UserRole.user] : ['email', 'username', 'nickname', 'password'],
-    [UserRole.superadmin] : ['email', 'username', 'password']
-}
-
-export const UserFieldModelAuthorized = {
-    [UserRole.user] : [...UserFieldModelRequired[UserRole.user], 'firstname', 'lastname', 'phone', 'birthday', 'height', 'weight', 'sex', 'picture'],
-    [UserRole.superadmin] : [...UserFieldModelRequired[UserRole.superadmin], 'nickname', 'firstname', 'lastname', 'phone', 'birthday', 'height', 'weight', 'sex', 'picture']
+    [UserRole.user] : ['firstname', 'email', 'password'],
 }
 
 export const UserRequestError = {
@@ -34,14 +28,9 @@ export const UserRequestError = {
     UNKNOWN_ERROR : {success : false, data : null, message : "unknown error", error : ApiError.USER_UNKOWN_ERROR, status : HttpStatusCode.InternalServerError} as IResponse,
     USER_DOESNT_EXIST : {success : false, data : null, message : "user doesn't exist", error : ApiError.USER_USER_DOEST_EXIST, status : HttpStatusCode.NotFound} as IResponse,
     DATA_IS_EMPTY : {success : false, data : null, message : "data is empty", error : ApiError.USER_DATA_IF_EMPTY, status : HttpStatusCode.BadRequest} as IResponse,
-    ROLE_IS_INVALID : {success : false, data : null, message : "role is invalid", error : ApiError.USER_ROLE_IS_INVALID, status : HttpStatusCode.BadRequest} as IResponse,
     KEY_IS_NEEDED : {success : false, data : null, message : "key is required : ", error : ApiError.USER_KEY_IS_NEEDED, status : HttpStatusCode.BadRequest} as IResponse,
     PASSWORD_IS_EMPTY : {success : false, data : null, message : "password can't be empty", error : ApiError.USER_PASSWORD_IS_EMPTY, status : HttpStatusCode.BadRequest} as IResponse,
-    NICKNAME_IS_EMPTY : {success : false, data : null, message : "nickname can't be empty", error : ApiError.USER_NICKNAME_IS_EMPTY, status : HttpStatusCode.BadRequest} as IResponse,
-    USERNAME_ALREADY_USED : {success : false, data : null, message : "username already used", error : ApiError.USER_USERNAME_ALREADY_USED, status : HttpStatusCode.BadRequest} as IResponse,
     EMAIL_ALREADY_USED : {success : false, data : null, message : "email already used", error : ApiError.USER_EMAIL_ALREADY_USED, status : HttpStatusCode.BadRequest} as IResponse,
-    UDPATE_ROLE : {success : false, data : null, message : "impossible to update role", error : ApiError.USER_UDPATE_ROLE, status : HttpStatusCode.BadRequest} as IResponse,
-    USERNAME_CANT_BE_EMAIL : {success : false, data : null, message : "username can't be email", error : ApiError.USER_USERNAME_CANT_BE_EMAIL, status : HttpStatusCode.BadRequest} as IResponse,
     MAIL_IS_INVALID : {success : false, data : null, message : "mail is invalid", error : ApiError.USER_MAIL_IS_INVALID, status : HttpStatusCode.BadRequest} as IResponse,
 }
 
