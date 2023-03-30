@@ -88,5 +88,11 @@ var ApiError;
     ApiError[ApiError["RELATIONSHIP_WAITING_RESPONSE"] = 652] = "RELATIONSHIP_WAITING_RESPONSE";
     ApiError[ApiError["RELATIONSHIP_DOESNT_EXIST"] = 653] = "RELATIONSHIP_DOESNT_EXIST";
     ApiError[ApiError["RELATIONSHIP_INVALID_STATUS"] = 654] = "RELATIONSHIP_INVALID_STATUS";
+    //PLACE
+    ApiError[ApiError["PLACE_UNKNOWN_ERROR"] = 700] = "PLACE_UNKNOWN_ERROR";
+    ApiError[ApiError["PLACE_NO_RESULT"] = 701] = "PLACE_NO_RESULT";
+    ApiError[ApiError["PLACE_API_FETCHING"] = 702] = "PLACE_API_FETCHING";
+    ApiError[ApiError["PLACE_PRICE_TYPE_EMPTY"] = 703] = "PLACE_PRICE_TYPE_EMPTY";
+    ApiError[ApiError["PLACE_ACTIVITY_EMPTY"] = 704] = "PLACE_ACTIVITY_EMPTY";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map
