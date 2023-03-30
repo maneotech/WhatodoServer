@@ -94,5 +94,7 @@ var ApiError;
     ApiError[ApiError["PLACE_API_FETCHING"] = 702] = "PLACE_API_FETCHING";
     ApiError[ApiError["PLACE_PRICE_TYPE_EMPTY"] = 703] = "PLACE_PRICE_TYPE_EMPTY";
     ApiError[ApiError["PLACE_ACTIVITY_EMPTY"] = 704] = "PLACE_ACTIVITY_EMPTY";
+    ApiError[ApiError["PLACE_BODY_EMPTY"] = 705] = "PLACE_BODY_EMPTY";
+    ApiError[ApiError["PLACE_BODY_ERROR"] = 706] = "PLACE_BODY_ERROR";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map

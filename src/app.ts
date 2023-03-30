@@ -22,6 +22,7 @@ import RequestErrors from './services/request-errors.service';
 import { InternalPathConstants } from './constants/internal-path.constant';
 // Routers
 import { userRouter } from './routes/user/user.route';
+import { placeRouter } from './routes/place/place.route';
 
 console.log("\n\
  _______________________________________________________  \n\
@@ -59,6 +60,8 @@ app.use('/api', router);
 
 // Routes 
 router.use('/user', userRouter);
+router.use('/place', placeRouter);
+
 
 // Static
 app.use('/static', express.static(InternalPathConstants.static, {fallthrough: true}), function (req, res) {

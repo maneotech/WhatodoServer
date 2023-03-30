@@ -1,6 +1,4 @@
-import { IModel } from "../../interfaces/model.interface";
-
-export interface RequestPlaceModel extends IModel {
+export class RequestPlaceModel {
     activities: ActivityType[];
     priceTypes: PriceType[];
     movingTypes: MovingType[];
@@ -9,6 +7,10 @@ export interface RequestPlaceModel extends IModel {
     address: String;
     maxHour: number;
     maxMin: number;
+
+
+
+
 }
 
 export enum ActivityType {
@@ -17,7 +19,7 @@ export enum ActivityType {
     restaurant,
     bar,
     shopping,
-    grocery,
+    snacking,
 }
 
 export enum PriceType {

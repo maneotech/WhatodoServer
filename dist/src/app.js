@@ -28,6 +28,7 @@ const request_errors_service_1 = __importDefault(require("./services/request-err
 const internal_path_constant_1 = require("./constants/internal-path.constant");
 // Routers
 const user_route_1 = require("./routes/user/user.route");
+const place_route_1 = require("./routes/place/place.route");
 console.log("\n\
  _______________________________________________________  \n\
 |-------------------------------------------------------| \n\
@@ -52,6 +53,7 @@ app.use(firewall_middleware_1.firewallMiddleware);
 app.use('/api', router);
 // Routes 
 router.use('/user', user_route_1.userRouter);
+router.use('/place', place_route_1.placeRouter);
 // Static
 app.use('/static', express_1.default.static(internal_path_constant_1.InternalPathConstants.static, { fallthrough: true }), function (req, res) {
     return request_errors_service_1.default.fileNotFound(req, res);

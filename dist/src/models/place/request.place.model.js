@@ -1,6 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.MovingType = exports.PriceType = exports.ActivityType = void 0;
+exports.MovingType = exports.PriceType = exports.ActivityType = exports.RequestPlaceModel = void 0;
+class RequestPlaceModel {
+}
+exports.RequestPlaceModel = RequestPlaceModel;
 var ActivityType;
 (function (ActivityType) {
     ActivityType[ActivityType["culturel"] = 0] = "culturel";

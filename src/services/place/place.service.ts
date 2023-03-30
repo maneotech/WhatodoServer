@@ -3,7 +3,7 @@ import { IResponse } from "../../interfaces/request.interface";
 import { ActivityType, MovingType, PriceType, RequestPlaceModel } from "../../models/place/request.place.model";
 import { ResponsePlaceModel } from "../../models/place/response.place.model";
 import { UtilitiesService } from "../utilities.service";
-const http = require('http');
+const https = require('https');
 
 
 export default class PlaceService {
@@ -14,6 +14,7 @@ export default class PlaceService {
 
         //1. prepare google map request the best as possible
 
+        console.log(requestPlaceModel.movingTypes);
 
         const lat = requestPlaceModel.latitude;
         const lng = requestPlaceModel.longitude;
@@ -25,14 +26,15 @@ export default class PlaceService {
         var keyword = PlaceService.getKeyword();
 
         try {
-            type = PlaceService.getType(requestPlaceModel.activities);
+            //type = PlaceService.getType(requestPlaceModel.activities);
+            type="restaurant";
         }
         catch {
             return PlaceRequestError.ACTIVITIES_EMPTY;
         }
 
         try {
-            maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == PriceType.notFree ? "4" : "0";
+            maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == PriceType.notFree ? "4" : "4";
         }
         catch {
             return PlaceRequestError.PRICE_TYPE_EMPTY;
@@ -52,29 +54,44 @@ export default class PlaceService {
             keyword + "&key=" +
             googleApiKey;
 
+            console.log(url);
         //3. parse the result and pick the best one as possible
         // check if the one selected has already been done (check database)
-        try {
-            http.get(url, (resp) => {
-                let data = '';
-                resp.on('data', (chunk) => {
-                    var responsePlaceModels: ResponsePlaceModel[] = JSON.parse(chunk);
-                    response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
-                    return response;
-                });
-                resp.on('end', () => {
-                    console.log(data);
-                    return PlaceRequestError.FETCHING_API;
-                });
-            }).on('error', (error) => {
-                console.error(error);
-                return PlaceRequestError.FETCHING_API;
+        var data = null;
 
-            });
+        try {
+            data = JSON.parse(await PlaceService.fetchApi(url));
         }
-        catch {
+        catch (error) {
+            console.log(error)
             return PlaceRequestError.FETCHING_API;
         }
+
+        if (data.results) {
+
+            if (data.results.length == 0) {
+                return PlaceRequestError.NO_RESULT;
+            }
+            try {
+                var responsePlaceModels: ResponsePlaceModel[] = [];
+                data.results.forEach(result => {
+                    var json = JSON.stringify(result);
+                    responsePlaceModels.push(JSON.parse(json));
+                });
+                 
+                response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
+                return response;
+            }
+            catch(error) {
+                console.log(error);
+                return PlaceRequestError.FETCHING_API;
+            }
+        }
+        else {
+            return PlaceRequestError.FETCHING_API;
+
+        }
+
 
 
         // check if all the critera are there
@@ -185,8 +202,8 @@ export default class PlaceService {
                 types = ["bowling_alley", "stadium", "park", "gym"];
                 break;
 
-            case ActivityType.grocery:
-                types = ["convenience_store", "drugstore", "liquor_store", "supermarket"];
+            case ActivityType.snacking:
+                types = ["bakery", "cafe"];
                 break;
 
             case ActivityType.shopping:
@@ -224,13 +241,35 @@ export default class PlaceService {
         return "";
     }
 
-    static selectBestResultFromApi(responses: ResponsePlaceModel[]) : ResponsePlaceModel{
+    static selectBestResultFromApi(responses: ResponsePlaceModel[]): ResponsePlaceModel {
 
-        if (responses.length == 0){
+        if (responses.length == 0) {
             throw new Error();
         }
 
         UtilitiesService.shuffleArray(responses);
         return responses[0];
+    }
+
+    static canBeCasted(json: {}): boolean {
+        return (json.hasOwnProperty('latitude') &&
+            json.hasOwnProperty('longitude') &&
+            json.hasOwnProperty('movingTypes') &&
+            json.hasOwnProperty('maxHour') &&
+            json.hasOwnProperty('maxMin') &&
+            json.hasOwnProperty('activities') &&
+            json.hasOwnProperty('priceTypes'));
+    }
+
+    static fetchApi(url: String): Promise<string> {
+        return new Promise((resolve, reject) => {
+            let data = '';
+            https.get(url, res => {
+                res.on('data', chunk => { data += chunk })
+                res.on('end', () => {
+                    resolve(data);
+                })
+            });
+        });
     }
 }

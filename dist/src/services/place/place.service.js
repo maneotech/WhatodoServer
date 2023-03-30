@@ -12,12 +12,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const place_constants_1 = require("../../constants/place/place.constants");
 const request_place_model_1 = require("../../models/place/request.place.model");
 const utilities_service_1 = require("../utilities.service");
-const http = require('http');
+const https = require('https');
 class PlaceService {
     static getOnePlace(requestPlaceModel) {
         return __awaiter(this, void 0, void 0, function* () {
             let response = place_constants_1.PlaceRequestError.NO_ERROR;
             //1. prepare google map request the best as possible
+            console.log(requestPlaceModel.movingTypes);
             const lat = requestPlaceModel.latitude;
             const lng = requestPlaceModel.longitude;
             const location = lat + "," + lng;
@@ -27,13 +28,14 @@ class PlaceService {
             var maxprice = "0";
             var keyword = PlaceService.getKeyword();
             try {
-                type = PlaceService.getType(requestPlaceModel.activities);
+                //type = PlaceService.getType(requestPlaceModel.activities);
+                type = "restaurant";
             }
             catch (_a) {
                 return place_constants_1.PlaceRequestError.ACTIVITIES_EMPTY;
             }
             try {
-                maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == request_place_model_1.PriceType.notFree ? "4" : "0";
+                maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == request_place_model_1.PriceType.notFree ? "4" : "4";
             }
             catch (_b) {
                 return place_constants_1.PlaceRequestError.PRICE_TYPE_EMPTY;
@@ -48,26 +50,44 @@ class PlaceService {
                 maxprice + "&keyword=" +
                 keyword + "&key=" +
                 googleApiKey;
+            console.log(url);
             //3. parse the result and pick the best one as possible
             // check if the one selected has already been done (check database)
+            var data = null;
             try {
-                http.get(url, (resp) => {
-                    let data = '';
-                    resp.on('data', (chunk) => {
-                        var responsePlaceModels = JSON.parse(chunk);
-                        response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
-                        return response;
-                    });
-                    resp.on('end', () => {
-                        console.log(data);
-                        return place_constants_1.PlaceRequestError.FETCHING_API;
-                    });
-                }).on('error', (error) => {
-                    console.error(error);
-                    return place_constants_1.PlaceRequestError.FETCHING_API;
-                });
+                data = JSON.parse(yield PlaceService.fetchApi(url));
             }
-            catch (_c) {
+            catch (error) {
+                console.log(error);
+                return place_constants_1.PlaceRequestError.FETCHING_API;
+            }
+            console.log(data);
+            console.log("data.results");
+            console.log(data.results);
+            if (data.results) {
+                console.log("11111111");
+                if (data.results.length == 0) {
+                    return place_constants_1.PlaceRequestError.NO_RESULT;
+                }
+                try {
+                    var responsePlaceModels = [];
+                    data.results.forEach(result => {
+                        console.log(result);
+                        var json = JSON.stringify(result);
+                        console.log(json);
+                        responsePlaceModels.push(JSON.parse(json));
+                    });
+                    console.log("responsePlaceModels");
+                    console.log(responsePlaceModels);
+                    response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
+                    return response;
+                }
+                catch (error) {
+                    console.log(error);
+                    return place_constants_1.PlaceRequestError.FETCHING_API;
+                }
+            }
+            else {
                 return place_constants_1.PlaceRequestError.FETCHING_API;
             }
             // check if all the critera are there
@@ -186,6 +206,26 @@ class PlaceService {
         }
         utilities_service_1.UtilitiesService.shuffleArray(responses);
         return responses[0];
+    }
+    static canBeCasted(json) {
+        return (json.hasOwnProperty('latitude') &&
+            json.hasOwnProperty('longitude') &&
+            json.hasOwnProperty('movingTypes') &&
+            json.hasOwnProperty('maxHour') &&
+            json.hasOwnProperty('maxMin') &&
+            json.hasOwnProperty('activities') &&
+            json.hasOwnProperty('priceTypes'));
+    }
+    static fetchApi(url) {
+        return new Promise((resolve, reject) => {
+            let data = '';
+            https.get(url, res => {
+                res.on('data', chunk => { data += chunk; });
+                res.on('end', () => {
+                    resolve(data);
+                });
+            });
+        });
     }
 }
 exports.default = PlaceService;

@@ -13,13 +13,23 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.getOnePlace = void 0;
+const place_constants_1 = require("../../constants/place/place.constants");
 const place_service_1 = __importDefault(require("../../services/place/place.service"));
 const request_service_1 = __importDefault(require("../../services/request.service"));
+const utilities_service_1 = require("../../services/utilities.service");
 function getOnePlace(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
-        const userId = req.user._id;
+        //const userId = req.user._id;
         const body = req.body;
-        const response = yield place_service_1.default.getOnePlace(body);
+        if (utilities_service_1.UtilitiesService.isEmpty(body)) {
+            return request_service_1.default.send(res, place_constants_1.PlaceRequestError.BODY_EMPTY);
+        }
+        if (place_service_1.default.canBeCasted(body) == false) {
+            return request_service_1.default.send(res, place_constants_1.PlaceRequestError.BODY_ERROR);
+        }
+        const requestPlaceModel = body;
+        console.log(requestPlaceModel);
+        const response = yield place_service_1.default.getOnePlace(requestPlaceModel);
         request_service_1.default.send(res, response);
     });
 }
