@@ -7,10 +7,6 @@ export class RequestPlaceModel {
     address: String;
     maxHour: number;
     maxMin: number;
-
-
-
-
 }
 
 export enum ActivityType {

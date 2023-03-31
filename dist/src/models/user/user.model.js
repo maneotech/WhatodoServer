@@ -21,6 +21,10 @@ const schema = new mongoose_service_1.MongooseCustomSchema({
         type: String,
         enum: user_constant_1.UserStatus,
         default: user_constant_1.UserStatus.enabled
+    },
+    token: {
+        type: Number,
+        default: 3
     }
 });
 schema.index({ email: -1 });

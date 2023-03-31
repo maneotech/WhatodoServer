@@ -1,9 +1,14 @@
+import { ObjectId } from "mongoose";
 import { PlaceRequestError } from "../../constants/place/place.constants";
 import { IResponse } from "../../interfaces/request.interface";
 import { ActivityType, MovingType, PriceType, RequestPlaceModel } from "../../models/place/request.place.model";
 import { ResponsePlaceModel } from "../../models/place/response.place.model";
+import { IShowedPlaceModel, ShowedPlaceModel } from "../../models/place/showed.place.model";
+import ShowedPlaceRepository from "../../repositories/place/place.repository";
 import { UtilitiesService } from "../utilities.service";
 const https = require('https');
+
+const showedPlaceRepository = new ShowedPlaceRepository();
 
 
 export default class PlaceService {
@@ -271,5 +276,24 @@ export default class PlaceService {
                 })
             });
         });
+    }
+
+    static async saveShowedPlace(userId: ObjectId, responsePlaceModel: ResponsePlaceModel) : Promise<boolean>{
+        var data : IShowedPlaceModel = {
+            user : userId,
+            place : responsePlaceModel,
+        };
+
+        console.log(userId);
+        console.log(responsePlaceModel);
+        
+        try {
+            await showedPlaceRepository.create(data);
+            return true;
+        }
+        catch (e) {
+            console.log(e);
+            return false;
+        }
     }
 }

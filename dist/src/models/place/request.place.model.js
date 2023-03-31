@@ -11,7 +11,7 @@ var ActivityType;
     ActivityType[ActivityType["restaurant"] = 2] = "restaurant";
     ActivityType[ActivityType["bar"] = 3] = "bar";
     ActivityType[ActivityType["shopping"] = 4] = "shopping";
-    ActivityType[ActivityType["grocery"] = 5] = "grocery";
+    ActivityType[ActivityType["snacking"] = 5] = "snacking";
 })(ActivityType = exports.ActivityType || (exports.ActivityType = {}));
 var PriceType;
 (function (PriceType) {

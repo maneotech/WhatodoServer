@@ -8,11 +8,16 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const place_constants_1 = require("../../constants/place/place.constants");
 const request_place_model_1 = require("../../models/place/request.place.model");
+const place_repository_1 = __importDefault(require("../../repositories/place/place.repository"));
 const utilities_service_1 = require("../utilities.service");
 const https = require('https');
+const showedPlaceRepository = new place_repository_1.default();
 class PlaceService {
     static getOnePlace(requestPlaceModel) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -61,24 +66,16 @@ class PlaceService {
                 console.log(error);
                 return place_constants_1.PlaceRequestError.FETCHING_API;
             }
-            console.log(data);
-            console.log("data.results");
-            console.log(data.results);
             if (data.results) {
-                console.log("11111111");
                 if (data.results.length == 0) {
                     return place_constants_1.PlaceRequestError.NO_RESULT;
                 }
                 try {
                     var responsePlaceModels = [];
                     data.results.forEach(result => {
-                        console.log(result);
                         var json = JSON.stringify(result);
-                        console.log(json);
                         responsePlaceModels.push(JSON.parse(json));
                     });
-                    console.log("responsePlaceModels");
-                    console.log(responsePlaceModels);
                     response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
                     return response;
                 }
@@ -173,8 +170,8 @@ class PlaceService {
             case request_place_model_1.ActivityType.sport:
                 types = ["bowling_alley", "stadium", "park", "gym"];
                 break;
-            case request_place_model_1.ActivityType.grocery:
-                types = ["convenience_store", "drugstore", "liquor_store", "supermarket"];
+            case request_place_model_1.ActivityType.snacking:
+                types = ["bakery", "cafe"];
                 break;
             case request_place_model_1.ActivityType.shopping:
                 var types = ["shopping_mall", "shoe_store", "jewelry_store", "home_goods_store", "furniture_store", "department_store", "clothing_store"];
@@ -225,6 +222,24 @@ class PlaceService {
                     resolve(data);
                 });
             });
+        });
+    }
+    static saveShowedPlace(userId, responsePlaceModel) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var data = {
+                user: userId,
+                place: responsePlaceModel,
+            };
+            console.log(userId);
+            console.log(responsePlaceModel);
+            try {
+                yield showedPlaceRepository.create(data);
+                return true;
+            }
+            catch (e) {
+                console.log(e);
+                return false;
+            }
         });
     }
 }

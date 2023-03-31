@@ -11,5 +11,8 @@ export const PlaceRequestError = {
     BODY_EMPTY: { success: false, data: null, message: "body is empty", error: ApiError.PLACE_BODY_EMPTY, status: HttpStatusCode.InternalServerError } as IResponse,
     BODY_ERROR: { success: false, data: null, message: "body is not clean", error: ApiError.PLACE_BODY_ERROR, status: HttpStatusCode.InternalServerError } as IResponse,
     NO_RESULT: { success: false, data: null, message: "no result", error: ApiError.PLACE_NO_RESULT, status: HttpStatusCode.InternalServerError } as IResponse,
+    ERROR_SPENDING_TOKEN: { success: false, data: null, message: "error spending token", error: ApiError.PLACE_ERROR_SPENDING_TOKEN, status: HttpStatusCode.InternalServerError } as IResponse,
+    NOT_ENOUGH_TOKEN: { success: false, data: null, message: "not enough token", error: ApiError.PLACE_NOT_ENOUGH_TOKEN, status: HttpStatusCode.InternalServerError } as IResponse,
+    NOT_CREATED_ERROR: { success: false, data: null, message: "showed place couldn't be created", error: ApiError.PLACE_NOT_CREATED, status: HttpStatusCode.InternalServerError } as IResponse,
 
 }

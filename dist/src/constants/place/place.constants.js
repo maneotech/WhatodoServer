@@ -12,5 +12,8 @@ exports.PlaceRequestError = {
     BODY_EMPTY: { success: false, data: null, message: "body is empty", error: api_errors_constants_1.ApiError.PLACE_BODY_EMPTY, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
     BODY_ERROR: { success: false, data: null, message: "body is not clean", error: api_errors_constants_1.ApiError.PLACE_BODY_ERROR, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
     NO_RESULT: { success: false, data: null, message: "no result", error: api_errors_constants_1.ApiError.PLACE_NO_RESULT, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    ERROR_SPENDING_TOKEN: { success: false, data: null, message: "error spending token", error: api_errors_constants_1.ApiError.PLACE_ERROR_SPENDING_TOKEN, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    NOT_ENOUGH_TOKEN: { success: false, data: null, message: "not enough token", error: api_errors_constants_1.ApiError.PLACE_NOT_ENOUGH_TOKEN, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    NOT_CREATED_ERROR: { success: false, data: null, message: "showed place couldn't be created", error: api_errors_constants_1.ApiError.PLACE_NOT_CREATED, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
 };
 //# sourceMappingURL=place.constants.js.map

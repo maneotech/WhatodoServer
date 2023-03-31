@@ -1,6 +1,6 @@
 export class ResponsePlaceModel {
 
-    geometry : LocationModel;
+    geometry : ILocationModel;
     icon: String;
     name : String;
     place_id: String;
@@ -23,7 +23,7 @@ export class ResponsePlaceModel {
     }
 }
 
-export interface LocationModel {
+export interface ILocationModel {
     lat: number,
     lng: number
 }

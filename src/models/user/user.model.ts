@@ -22,6 +22,10 @@ const schema = new MongooseCustomSchema({
         type : String,
         enum : UserStatus,
         default : UserStatus.enabled
+    },
+    token: {
+        type: Number,
+        default: 3
     }
 });
 
@@ -30,6 +34,7 @@ export interface IUserModel extends IModel {
     email : string;
     password? : string;
     status? : UserStatus;
+    token?: number;
 }
 
 export interface IUserDocument extends mongoose.Document<ObjectId>, IUserModel {}

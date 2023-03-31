@@ -26,7 +26,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.placeRouter = void 0;
 const async_express_service_1 = require("../../services/async-express.service");
 const controllers = __importStar(require("../../controllers/place/place.controller"));
+const authentification_middleware_1 = require("../../middlewares/authentification.middleware");
 const router = async_express_service_1.AsyncExpressService.getAsyncRouter();
-router.use('/', controllers.getOnePlace);
+router.use('/', (0, authentification_middleware_1.authentificate)(), controllers.getOnePlace);
 exports.placeRouter = router;
 //# sourceMappingURL=place.route.js.map

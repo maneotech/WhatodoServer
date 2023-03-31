@@ -96,5 +96,8 @@ var ApiError;
     ApiError[ApiError["PLACE_ACTIVITY_EMPTY"] = 704] = "PLACE_ACTIVITY_EMPTY";
     ApiError[ApiError["PLACE_BODY_EMPTY"] = 705] = "PLACE_BODY_EMPTY";
     ApiError[ApiError["PLACE_BODY_ERROR"] = 706] = "PLACE_BODY_ERROR";
+    ApiError[ApiError["PLACE_ERROR_SPENDING_TOKEN"] = 707] = "PLACE_ERROR_SPENDING_TOKEN";
+    ApiError[ApiError["PLACE_NOT_ENOUGH_TOKEN"] = 708] = "PLACE_NOT_ENOUGH_TOKEN";
+    ApiError[ApiError["PLACE_NOT_CREATED"] = 709] = "PLACE_NOT_CREATED";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map
