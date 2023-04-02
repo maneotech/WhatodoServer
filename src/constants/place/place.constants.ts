@@ -14,5 +14,9 @@ export const PlaceRequestError = {
     ERROR_SPENDING_TOKEN: { success: false, data: null, message: "error spending token", error: ApiError.PLACE_ERROR_SPENDING_TOKEN, status: HttpStatusCode.InternalServerError } as IResponse,
     NOT_ENOUGH_TOKEN: { success: false, data: null, message: "not enough token", error: ApiError.PLACE_NOT_ENOUGH_TOKEN, status: HttpStatusCode.InternalServerError } as IResponse,
     NOT_CREATED_ERROR: { success: false, data: null, message: "showed place couldn't be created", error: ApiError.PLACE_NOT_CREATED, status: HttpStatusCode.InternalServerError } as IResponse,
+    ACCEPT_ERROR: { success: false, data: null, message: "accept place error", error: ApiError.PLACE_NOT_ACCEPTED, status: HttpStatusCode.InternalServerError } as IResponse,
+    GET_ACCEPTED_ERROR: { success: false, data: null, message: "get accepted places error", error: ApiError.PLACE_GET_ACCEPTED, status: HttpStatusCode.InternalServerError } as IResponse,
+    REFUSE_ERROR: { success: false, data: null, message: "refuse place error", error: ApiError.PLACE_NOT_REFUSED, status: HttpStatusCode.InternalServerError } as IResponse,
+
 
 }

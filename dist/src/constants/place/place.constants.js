@@ -15,5 +15,8 @@ exports.PlaceRequestError = {
     ERROR_SPENDING_TOKEN: { success: false, data: null, message: "error spending token", error: api_errors_constants_1.ApiError.PLACE_ERROR_SPENDING_TOKEN, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
     NOT_ENOUGH_TOKEN: { success: false, data: null, message: "not enough token", error: api_errors_constants_1.ApiError.PLACE_NOT_ENOUGH_TOKEN, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
     NOT_CREATED_ERROR: { success: false, data: null, message: "showed place couldn't be created", error: api_errors_constants_1.ApiError.PLACE_NOT_CREATED, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    ACCEPT_ERROR: { success: false, data: null, message: "accept place error", error: api_errors_constants_1.ApiError.PLACE_NOT_ACCEPTED, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    GET_ACCEPTED_ERROR: { success: false, data: null, message: "get accepted places error", error: api_errors_constants_1.ApiError.PLACE_GET_ACCEPTED, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    REFUSE_ERROR: { success: false, data: null, message: "refuse place error", error: api_errors_constants_1.ApiError.PLACE_NOT_REFUSED, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
 };
 //# sourceMappingURL=place.constants.js.map

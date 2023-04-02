@@ -1,11 +1,14 @@
 import { ObjectId } from "mongoose";
+import { ActivityStringsConstant } from "../../constants/place/activities.constants";
 import { PlaceRequestError } from "../../constants/place/place.constants";
 import { IResponse } from "../../interfaces/request.interface";
+import { GeneratedOptionPlaceModel } from "../../models/place/generated.option.place.model";
 import { ActivityType, MovingType, PriceType, RequestPlaceModel } from "../../models/place/request.place.model";
 import { ResponsePlaceModel } from "../../models/place/response.place.model";
-import { IShowedPlaceModel, ShowedPlaceModel } from "../../models/place/showed.place.model";
+import { IShowedPlaceDocument, IShowedPlaceModel, ShowedPlaceModel } from "../../models/place/showed.place.model";
 import ShowedPlaceRepository from "../../repositories/place/place.repository";
 import { UtilitiesService } from "../utilities.service";
+import ActivityService from "./activity.service";
 const https = require('https');
 
 const showedPlaceRepository = new ShowedPlaceRepository();
@@ -13,7 +16,7 @@ const showedPlaceRepository = new ShowedPlaceRepository();
 
 export default class PlaceService {
 
-    static async getOnePlace(requestPlaceModel: RequestPlaceModel): Promise<IResponse<ResponsePlaceModel>> {
+    static async getOnePlace(userId: ObjectId, requestPlaceModel: RequestPlaceModel): Promise<IResponse<IShowedPlaceModel>> {
 
         let response: IResponse = PlaceRequestError.NO_ERROR;
 
@@ -24,15 +27,17 @@ export default class PlaceService {
         const lat = requestPlaceModel.latitude;
         const lng = requestPlaceModel.longitude;
         const location = lat + "," + lng;
-        const radius = PlaceService.getRadiusFromHourMinute(requestPlaceModel.movingTypes, requestPlaceModel.maxHour, requestPlaceModel.maxMin);
+        const movingType = PlaceService.selectOneMovingType(requestPlaceModel.movingTypes);
+
+        const radius = PlaceService.getRadiusFromHourMinute(movingType, requestPlaceModel.maxHour, requestPlaceModel.maxMin);
         const opennow = true;
         var type = null;
         var maxprice = "0";
         var keyword = PlaceService.getKeyword();
 
         try {
-            //type = PlaceService.getType(requestPlaceModel.activities);
-            type="restaurant";
+            //type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
+            type = "restaurant";
         }
         catch {
             return PlaceRequestError.ACTIVITIES_EMPTY;
@@ -59,7 +64,7 @@ export default class PlaceService {
             keyword + "&key=" +
             googleApiKey;
 
-            console.log(url);
+        console.log(url);
         //3. parse the result and pick the best one as possible
         // check if the one selected has already been done (check database)
         var data = null;
@@ -83,21 +88,32 @@ export default class PlaceService {
                     var json = JSON.stringify(result);
                     responsePlaceModels.push(JSON.parse(json));
                 });
-                 
-                response.data = PlaceService.selectBestResultFromApi(responsePlaceModels);
+
+
+                var responsePlaceModel: ResponsePlaceModel = PlaceService.selectBestResultFromApi(responsePlaceModels);
+                var generatedOptions: GeneratedOptionPlaceModel = {
+                    activityType: ActivityService.fromActivityStringToEnum(type),
+                    movingType: movingType,
+                    priceType: maxprice == "0" ? PriceType.free : PriceType.notFree,
+                    travellingDuration: 10
+                }
+                var showedPlaceModel: IShowedPlaceModel = {
+                    user: userId,
+                    place: responsePlaceModel,
+                    generatedOptions: generatedOptions
+                };
+
+                response.data = showedPlaceModel;
                 return response;
             }
-            catch(error) {
+            catch (error) {
                 console.log(error);
                 return PlaceRequestError.FETCHING_API;
             }
         }
         else {
             return PlaceRequestError.FETCHING_API;
-
         }
-
-
 
         // check if all the critera are there
 
@@ -105,43 +121,17 @@ export default class PlaceService {
         //4. return the object
     }
 
-    static getRadiusFromHourMinute(movingTypes: MovingType[], hours: number, minutes: number): String {
+    static getRadiusFromHourMinute(movingType: MovingType, hours: number, minutes: number): String {
         var radius: String;
-
-        var maxDistanceRangeType: MovingType = MovingType.byCar;
-
-        var byWalk: boolean = false;
-        var byBicycle: boolean = false;
-
-        movingTypes.forEach(movingType => {
-
-            if (movingType == MovingType.byWalk) {
-                byWalk = true;
-            }
-
-            if (movingType == MovingType.byBicycle) {
-                byBicycle = true;
-            }
-        });
-
-        if (byWalk) {
-            maxDistanceRangeType = MovingType.byWalk;
-        }
-
-        else if (byBicycle) {
-            maxDistanceRangeType = MovingType.byBicycle;
-        }
-
-        //end of prioritized moving type
-
         const totalMaxMinutes = hours * 60 + minutes;
-        if (maxDistanceRangeType == MovingType.byWalk) {
+
+        if (movingType == MovingType.byWalk) {
             //walk 3KM/H
 
             radius = ((totalMaxMinutes * 3 / 60) * 1000).toString();
         }
 
-        else if (maxDistanceRangeType == MovingType.byBicycle) {
+        else if (movingType == MovingType.byBicycle) {
             //bycyle 15KM/h
             radius = ((totalMaxMinutes * 15 / 60) * 1000).toString();
         }
@@ -152,84 +142,6 @@ export default class PlaceService {
         }
 
         return radius;
-    }
-
-    static getType(activities: ActivityType[]): String {
-        var type: String = "";
-
-        if (activities.length == 0)
-            throw new Error();
-
-        UtilitiesService.shuffleArray(activities);
-        var selectedActivity: ActivityType = activities[0];
-
-        //end of shuffle
-        types = [];
-
-        switch (selectedActivity) {
-
-            case ActivityType.restaurant:
-                types = ["restaurant"];
-                break;
-
-            case ActivityType.bar:
-                types = ["bar"];
-                break;
-
-            case ActivityType.culturel:
-                types = ["amusement_park",
-                    "aquarium",
-                    "art_gallery",
-                    "book_store",
-                    "cemetery",
-                    "church",
-                    "city_hall",
-                    "courthouse",
-                    "embassy",
-                    "florist",
-                    "hindu_temple",
-                    "library",
-                    "mosque",
-                    "movie_theater",
-                    "museum",
-                    "park",
-                    "spa",
-                    "subway_station",
-                    "synagogue",
-                    "tourist_attraction",
-                    "university",
-                    "zoo",
-                    "casino",
-                ];
-                break;
-
-            case ActivityType.sport:
-                types = ["bowling_alley", "stadium", "park", "gym"];
-                break;
-
-            case ActivityType.snacking:
-                types = ["bakery", "cafe"];
-                break;
-
-            case ActivityType.shopping:
-                var types = ["shopping_mall", "shoe_store", "jewelry_store", "home_goods_store", "furniture_store", "department_store", "clothing_store"]
-                break;
-
-            default:
-                throw new Error();
-        }
-
-        UtilitiesService.shuffleArray(types);
-
-        if (types.length == 0) {
-            throw new Error();
-        }
-
-        type = types[0];
-        console.log(type);
-
-
-        return type;
     }
 
     static getPriceType(priceTypes: PriceType[]): PriceType {
@@ -278,22 +190,72 @@ export default class PlaceService {
         });
     }
 
-    static async saveShowedPlace(userId: ObjectId, responsePlaceModel: ResponsePlaceModel) : Promise<boolean>{
-        var data : IShowedPlaceModel = {
-            user : userId,
-            place : responsePlaceModel,
-        };
-
-        console.log(userId);
-        console.log(responsePlaceModel);
-        
+    static async saveShowedPlace(showedPlaceModel: IShowedPlaceModel): Promise<IShowedPlaceModel> {
         try {
-            await showedPlaceRepository.create(data);
-            return true;
+            return await showedPlaceRepository.create(showedPlaceModel);
         }
         catch (e) {
             console.log(e);
-            return false;
+            return null;
         }
     }
+
+    static selectOneMovingType(movingTypes: MovingType[]): MovingType {
+        var selectedMovingType: MovingType = MovingType.byCar;
+
+        var byWalk: boolean = false;
+        var byBicycle: boolean = false;
+
+        movingTypes.forEach(movingType => {
+
+            if (movingType == MovingType.byWalk) {
+                byWalk = true;
+            }
+
+            if (movingType == MovingType.byBicycle) {
+                byBicycle = true;
+            }
+        });
+
+        if (byWalk) {
+            selectedMovingType = MovingType.byWalk;
+        }
+
+        else if (byBicycle) {
+            selectedMovingType = MovingType.byBicycle;
+        }
+
+        return selectedMovingType;
+    }
+
+    static async acceptPlace(docId: ObjectId, userId: ObjectId): Promise<IShowedPlaceDocument> {
+        try {
+            return await showedPlaceRepository.updateOne({ _id: docId, user: userId }, { accepted: true });
+        }
+        catch (error) {
+            return null;
+        }
+    }
+
+
+    static async refusePlace(docId: ObjectId, userId: ObjectId): Promise<IShowedPlaceDocument> {
+        try {
+            return await showedPlaceRepository.updateOne({ _id: docId, user: userId }, { accepted: false });
+        }
+        catch (error) {
+            return null;
+        }
+    }
+
+
+
+    static async getAcceptedPlaces(userId: ObjectId): Promise<IShowedPlaceModel[]> {
+        try {
+            return await showedPlaceRepository.getAcceptedForUser(userId);
+        }
+        catch (error) {
+            return null;
+        }
+    }
+
 }

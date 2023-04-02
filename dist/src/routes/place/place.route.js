@@ -28,6 +28,9 @@ const async_express_service_1 = require("../../services/async-express.service");
 const controllers = __importStar(require("../../controllers/place/place.controller"));
 const authentification_middleware_1 = require("../../middlewares/authentification.middleware");
 const router = async_express_service_1.AsyncExpressService.getAsyncRouter();
-router.use('/', (0, authentification_middleware_1.authentificate)(), controllers.getOnePlace);
+router.use('/one', (0, authentification_middleware_1.authentificate)(), controllers.getOnePlace);
+router.use('/accept', (0, authentification_middleware_1.authentificate)(), controllers.acceptPlace);
+router.use('/accepted', (0, authentification_middleware_1.authentificate)(), controllers.getAcceptedPlaces);
+router.use('/refuse', (0, authentification_middleware_1.authentificate)(), controllers.refusePlace);
 exports.placeRouter = router;
 //# sourceMappingURL=place.route.js.map

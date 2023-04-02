@@ -99,5 +99,8 @@ var ApiError;
     ApiError[ApiError["PLACE_ERROR_SPENDING_TOKEN"] = 707] = "PLACE_ERROR_SPENDING_TOKEN";
     ApiError[ApiError["PLACE_NOT_ENOUGH_TOKEN"] = 708] = "PLACE_NOT_ENOUGH_TOKEN";
     ApiError[ApiError["PLACE_NOT_CREATED"] = 709] = "PLACE_NOT_CREATED";
+    ApiError[ApiError["PLACE_NOT_ACCEPTED"] = 710] = "PLACE_NOT_ACCEPTED";
+    ApiError[ApiError["PLACE_GET_ACCEPTED"] = 711] = "PLACE_GET_ACCEPTED";
+    ApiError[ApiError["PLACE_NOT_REFUSED"] = 712] = "PLACE_NOT_REFUSED";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map

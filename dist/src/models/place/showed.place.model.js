@@ -8,6 +8,7 @@ const mongoose_1 = __importDefault(require("mongoose"));
 const databases_service_1 = require("../../services/databases.service");
 const mongoose_service_1 = require("../../services/mongoose.service");
 const user_model_1 = require("../user/user.model");
+const generated_option_place_model_1 = require("./generated.option.place.model");
 const response_place_model_1 = require("./response.place.model");
 const schema = new mongoose_service_1.MongooseCustomSchema({
     user: {
@@ -24,6 +25,10 @@ const schema = new mongoose_service_1.MongooseCustomSchema({
         required: true,
         default: false
     },
+    generatedOptions: {
+        type: mongoose_1.default.Schema.Types.Mixed,
+        ref: generated_option_place_model_1.GeneratedOptionPlaceModel
+    }
 });
 exports.ShowedPlaceModel = databases_service_1.db.local.model('ShowedPlace', schema);
 //# sourceMappingURL=showed.place.model.js.map
