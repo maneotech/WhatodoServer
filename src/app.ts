@@ -23,6 +23,8 @@ import { InternalPathConstants } from './constants/internal-path.constant';
 // Routers
 import { userRouter } from './routes/user/user.route';
 import { placeRouter } from './routes/place/place.route';
+import { adVideoRouter } from './routes/ad/ad.video.route';
+import { adRouter } from './routes/ad/ad.route';
 
 console.log("\n\
  _______________________________________________________  \n\
@@ -61,6 +63,7 @@ app.use('/api', router);
 // Routes 
 router.use('/user', userRouter);
 router.use('/place', placeRouter);
+router.use('/ad', adRouter);
 
 
 // Static

@@ -29,6 +29,7 @@ const internal_path_constant_1 = require("./constants/internal-path.constant");
 // Routers
 const user_route_1 = require("./routes/user/user.route");
 const place_route_1 = require("./routes/place/place.route");
+const ad_route_1 = require("./routes/ad/ad.route");
 console.log("\n\
  _______________________________________________________  \n\
 |-------------------------------------------------------| \n\
@@ -54,6 +55,7 @@ app.use('/api', router);
 // Routes 
 router.use('/user', user_route_1.userRouter);
 router.use('/place', place_route_1.placeRouter);
+router.use('/ad', ad_route_1.adRouter);
 // Static
 app.use('/static', express_1.default.static(internal_path_constant_1.InternalPathConstants.static, { fallthrough: true }), function (req, res) {
     return request_errors_service_1.default.fileNotFound(req, res);

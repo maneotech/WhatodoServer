@@ -30,11 +30,6 @@ export async function getOnePlace(req: Request, res: Response) {
     var response = await PlaceService.getOnePlace(user._id, requestPlaceModel);
 
     if (response.success) {
-        //use one token
-        if (await TransactionService.spendOneToken(user._id) == false) {
-            return RequestService.send(res, PlaceRequestError.ERROR_SPENDING_TOKEN);
-        }
-        console.log(response.data);
 
         const savedShowedPlace = await PlaceService.saveShowedPlace(response.data);
         if (savedShowedPlace == null) {
@@ -42,6 +37,11 @@ export async function getOnePlace(req: Request, res: Response) {
         }
         else {
             response.data = savedShowedPlace;
+        }
+
+        //use one token
+        if (await TransactionService.spendOneToken(user._id) == false) {
+            return RequestService.send(res, PlaceRequestError.ERROR_SPENDING_TOKEN);
         }
     }
 
@@ -108,7 +108,7 @@ export async function getAcceptedPlaces(req: Request, res: Response) {
     const result = await PlaceService.getAcceptedPlaces(user._id);
 
     var response: IResponse = PlaceRequestError.NO_ERROR;
-    if (result){
+    if (result) {
         response.data = result;
     }
     else {

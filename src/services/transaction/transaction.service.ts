@@ -14,4 +14,14 @@ export default class TransactionService {
             return false;
         }
     }
+
+    static async earnOneToken(userId: ObjId): Promise<boolean> {
+        try {
+            var doc = await userRepository.updateById(userId, { $inc: { token: 1 } });
+            return doc == null ? false : true; 
+        }
+        catch (error) {
+            return false;
+        }
+    }
 }

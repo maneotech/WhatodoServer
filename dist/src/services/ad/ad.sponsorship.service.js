@@ -12,31 +12,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const user_repository_1 = __importDefault(require("../../repositories/user/user.repository"));
-const userRepository = new user_repository_1.default();
-class TransactionService {
-    static spendOneToken(userId) {
+exports.AdSponsorshipService = void 0;
+const ad_sponsorship_repository_1 = __importDefault(require("../../repositories/ad/ad.sponsorship.repository"));
+const adSponsorshipRepository = new ad_sponsorship_repository_1.default();
+class AdSponsorshipService {
+    static createSponsorship(email, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                var doc = yield userRepository.updateById(userId, { $inc: { token: -1 } });
-                return doc == null ? false : true;
+                var sponsorshipModel = {
+                    userFrom: userId,
+                    emailTarget: email,
+                    targetHasConnected: false,
+                    userFromHasBeenNotified: false
+                };
+                return yield adSponsorshipRepository.create(sponsorshipModel);
             }
             catch (error) {
-                return false;
-            }
-        });
-    }
-    static earnOneToken(userId) {
-        return __awaiter(this, void 0, void 0, function* () {
-            try {
-                var doc = yield userRepository.updateById(userId, { $inc: { token: 1 } });
-                return doc == null ? false : true;
-            }
-            catch (error) {
-                return false;
+                return null;
             }
         });
     }
 }
-exports.default = TransactionService;
-//# sourceMappingURL=transaction.service.js.map
+exports.AdSponsorshipService = AdSponsorshipService;
+//# sourceMappingURL=ad.sponsorship.service.js.map

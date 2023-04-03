@@ -102,5 +102,11 @@ var ApiError;
     ApiError[ApiError["PLACE_NOT_ACCEPTED"] = 710] = "PLACE_NOT_ACCEPTED";
     ApiError[ApiError["PLACE_GET_ACCEPTED"] = 711] = "PLACE_GET_ACCEPTED";
     ApiError[ApiError["PLACE_NOT_REFUSED"] = 712] = "PLACE_NOT_REFUSED";
+    //AD
+    ApiError[ApiError["AD_BODY_EMPTY"] = 750] = "AD_BODY_EMPTY";
+    ApiError[ApiError["AD_BODY_ERROR"] = 751] = "AD_BODY_ERROR";
+    ApiError[ApiError["AD_UNKNOWN_ID"] = 752] = "AD_UNKNOWN_ID";
+    ApiError[ApiError["AD_INSERT_DB"] = 753] = "AD_INSERT_DB";
+    ApiError[ApiError["AD_EARN_TOKEN"] = 754] = "AD_EARN_TOKEN";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map

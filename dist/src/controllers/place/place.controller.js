@@ -36,17 +36,16 @@ function getOnePlace(req, res) {
         const requestPlaceModel = body;
         var response = yield place_service_1.default.getOnePlace(user._id, requestPlaceModel);
         if (response.success) {
-            //use one token
-            if ((yield transaction_service_1.default.spendOneToken(user._id)) == false) {
-                return request_service_1.default.send(res, place_constants_1.PlaceRequestError.ERROR_SPENDING_TOKEN);
-            }
-            console.log(response.data);
             const savedShowedPlace = yield place_service_1.default.saveShowedPlace(response.data);
             if (savedShowedPlace == null) {
                 return request_service_1.default.send(res, place_constants_1.PlaceRequestError.NOT_CREATED_ERROR);
             }
             else {
                 response.data = savedShowedPlace;
+            }
+            //use one token
+            if ((yield transaction_service_1.default.spendOneToken(user._id)) == false) {
+                return request_service_1.default.send(res, place_constants_1.PlaceRequestError.ERROR_SPENDING_TOKEN);
             }
         }
         return request_service_1.default.send(res, response);

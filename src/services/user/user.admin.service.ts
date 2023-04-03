@@ -3,6 +3,7 @@ import { ObjId } from "../../interfaces/model.interface";
 import { IResponse } from "../../interfaces/request.interface";
 import { IUserDocument, IUserModel } from "../../models/user/user.model";
 import UserRepository from "../../repositories/user/user.repository";
+import { AdSponsorshipService } from "../ad/ad.sponsorship.service";
 import { MailsService } from "../mail.service";
 import { UtilitiesService } from "../utilities.service";
 import UserService from "./user.service";
@@ -48,6 +49,10 @@ export class UserAdminService {
         
         const result = await userRepository.create(user);
         if (result) {
+
+            //no error management because no needed.
+            await AdSponsorshipService.validateSponsorship(user.email);
+
             response = UserRequestError.NO_ERROR;
             response.data = result;
         }
