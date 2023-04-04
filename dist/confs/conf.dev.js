@@ -28,7 +28,6 @@ exports.ConfDev = {
                 useUnifiedTopology: true
             }
         }
-    },
-    staticRelativePath: '../static'
+    }
 };
 //# sourceMappingURL=conf.dev.js.map

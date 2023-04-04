@@ -17,6 +17,7 @@ const ad_constants_1 = require("../../constants/ad/ad.constants");
 const request_service_1 = __importDefault(require("../../services/request.service"));
 const utilities_service_1 = require("../../services/utilities.service");
 const ad_sponsorship_service_1 = require("../../services/ad/ad.sponsorship.service");
+const user_service_1 = __importDefault(require("../../services/user/user.service"));
 function createSponsorship(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const user = req.user;
@@ -26,6 +27,12 @@ function createSponsorship(req, res) {
         }
         if (!body.email) {
             return request_service_1.default.send(res, ad_constants_1.AdRequestError.BODY_ERROR);
+        }
+        if (ad_sponsorship_service_1.AdSponsorshipService.doesSponsorshipExist(body.email)) {
+            return request_service_1.default.send(res, ad_constants_1.AdRequestError.SPONSORSHIP_ALREADY_EXIST);
+        }
+        if (user_service_1.default.emailAlreadyUsed(body.email)) {
+            return request_service_1.default.send(res, ad_constants_1.AdRequestError.USER_ALREADY_EXIST);
         }
         const result = yield ad_sponsorship_service_1.AdSponsorshipService.createSponsorship(body.email, user._id);
         if (result == null) {

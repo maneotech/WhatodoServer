@@ -43,4 +43,13 @@ export class AdSponsorshipService {
             return null;
         }
     }
+
+    static async getLastSponsorshipToBeNotified(userId: ObjectId) : Promise<IAdSponsorshipDocument>{
+        try {
+            return await adSponsorshipRepository.getOne({id: userId, targetHasConnected: true, userFromHasBeenNotified: false});
+        }
+        catch (error) {
+            return null;
+        }
+    }
 }

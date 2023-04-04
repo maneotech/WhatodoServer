@@ -29,6 +29,9 @@ function startAd(req, res) {
         if (!body.language && !body.platform) {
             return request_service_1.default.send(res, ad_constants_1.AdRequestError.BODY_ERROR);
         }
+        if ((yield ad_video_service_1.AdVideoService.isLastVideoDelayRespected(user._id)) == false) {
+            return request_service_1.default.send(res, ad_constants_1.AdRequestError.DELAY_NOT_RESPECTED);
+        }
         const response = ad_constants_1.AdRequestError.NO_ERROR;
         var language = enum_service_1.default.fromLanguageStringToEnum(body.language);
         var platform = enum_service_1.default.fromPlatformStringToEnum(body.platform);

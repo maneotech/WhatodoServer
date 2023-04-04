@@ -25,6 +25,7 @@ import { userRouter } from './routes/user/user.route';
 import { placeRouter } from './routes/place/place.route';
 import { adVideoRouter } from './routes/ad/ad.video.route';
 import { adRouter } from './routes/ad/ad.route';
+import { homeRouter } from './routes/home/home.route';
 
 console.log("\n\
  _______________________________________________________  \n\
@@ -64,10 +65,11 @@ app.use('/api', router);
 router.use('/user', userRouter);
 router.use('/place', placeRouter);
 router.use('/ad', adRouter);
+router.use('/home', homeRouter);
 
 
 // Static
-app.use('/static', express.static(InternalPathConstants.static, {fallthrough: true}), function (req, res) {
+app.use('/static/', express.static(InternalPathConstants.assets), function (req, res) {
     return RequestErrors.fileNotFound(req, res);
 });
 

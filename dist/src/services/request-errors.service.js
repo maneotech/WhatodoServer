@@ -1,10 +1,5 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const fs_1 = __importDefault(require("fs"));
-const internal_path_constant_1 = require("../constants/internal-path.constant");
 let accessForbiddenHtml = null;
 let fileNotFoundHtml = null;
 let pathNotFoundHtml = null;
@@ -77,32 +72,4 @@ class RequestErrors {
     }
 }
 exports.default = RequestErrors;
-function initHtmls() {
-    fs_1.default.readFile(internal_path_constant_1.InternalPathConstants.assets + 'html/errors/403/index.html', function (err, data) {
-        if (!err) {
-            accessForbiddenHtml = data;
-        }
-    });
-    fs_1.default.readFile(internal_path_constant_1.InternalPathConstants.assets + 'html/errors/404/index.html', function (err, data) {
-        if (!err) {
-            fileNotFoundHtml = data;
-        }
-    });
-    fs_1.default.readFile(internal_path_constant_1.InternalPathConstants.assets + 'html/errors/404/index.html', function (err, data) {
-        if (!err) {
-            pathNotFoundHtml = data;
-        }
-    });
-    fs_1.default.readFile(internal_path_constant_1.InternalPathConstants.assets + 'html/errors/500/index.html', function (err, data) {
-        if (!err) {
-            internalErrorHtml = data;
-        }
-    });
-    fs_1.default.readFile(internal_path_constant_1.InternalPathConstants.assets + 'html/errors/460/index.html', function (err, data) {
-        if (!err) {
-            accessExpiredHtml = data;
-        }
-    });
-}
-initHtmls();
 //# sourceMappingURL=request-errors.service.js.map

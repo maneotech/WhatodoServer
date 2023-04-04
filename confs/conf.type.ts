@@ -54,7 +54,5 @@ export interface IConf {
     },
     db: {
         local : IConfDb
-    },
-    //notification : IConfNotifications,
-    staticRelativePath : string
+    }
 }

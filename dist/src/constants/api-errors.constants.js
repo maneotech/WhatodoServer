@@ -108,5 +108,8 @@ var ApiError;
     ApiError[ApiError["AD_UNKNOWN_ID"] = 752] = "AD_UNKNOWN_ID";
     ApiError[ApiError["AD_INSERT_DB"] = 753] = "AD_INSERT_DB";
     ApiError[ApiError["AD_EARN_TOKEN"] = 754] = "AD_EARN_TOKEN";
+    ApiError[ApiError["AD_SPONSORSHIP_EXISTS"] = 755] = "AD_SPONSORSHIP_EXISTS";
+    ApiError[ApiError["AD_USER_EXISTS"] = 756] = "AD_USER_EXISTS";
+    ApiError[ApiError["AD_DELAY"] = 757] = "AD_DELAY";
 })(ApiError = exports.ApiError || (exports.ApiError = {}));
 //# sourceMappingURL=api-errors.constants.js.map

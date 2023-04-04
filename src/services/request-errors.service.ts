@@ -1,5 +1,3 @@
-import fs from 'fs'
-import { InternalPathConstants } from '../constants/internal-path.constant';
 
 let accessForbiddenHtml = null;
 let fileNotFoundHtml = null;
@@ -74,32 +72,4 @@ export default class RequestErrors {
     }
 }
 
-function initHtmls() {
-    fs.readFile(InternalPathConstants.assets + 'html/errors/403/index.html', function(err, data) {
-        if (!err) {
-            accessForbiddenHtml = data;
-        }
-    }); 
-    fs.readFile(InternalPathConstants.assets + 'html/errors/404/index.html', function(err, data) {
-        if (!err) {
-            fileNotFoundHtml = data;
-        }
-    }); 
-    fs.readFile(InternalPathConstants.assets + 'html/errors/404/index.html', function(err, data) {
-        if (!err) {
-            pathNotFoundHtml = data;
-        }
-    }); 
-    fs.readFile(InternalPathConstants.assets + 'html/errors/500/index.html', function(err, data) {
-        if (!err) {
-            internalErrorHtml = data;
-        }
-    }); 
-    fs.readFile(InternalPathConstants.assets + 'html/errors/460/index.html', function(err, data) {
-        if (!err) {
-            accessExpiredHtml = data;
-        }
-    });
-}
 
-initHtmls();

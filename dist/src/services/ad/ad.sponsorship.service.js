@@ -16,6 +16,27 @@ exports.AdSponsorshipService = void 0;
 const ad_sponsorship_repository_1 = __importDefault(require("../../repositories/ad/ad.sponsorship.repository"));
 const adSponsorshipRepository = new ad_sponsorship_repository_1.default();
 class AdSponsorshipService {
+    static doesSponsorshipExist(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield adSponsorshipRepository.exists({ emailTarget: email });
+            }
+            catch (error) {
+                return true;
+            }
+        });
+    }
+    static validateSponsorship(email) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                var doc = yield adSponsorshipRepository.updateOne({ emailTarget: email }, { targetHasConnected: true });
+                return doc == null ? false : true;
+            }
+            catch (error) {
+                return false;
+            }
+        });
+    }
     static createSponsorship(email, userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
@@ -26,6 +47,16 @@ class AdSponsorshipService {
                     userFromHasBeenNotified: false
                 };
                 return yield adSponsorshipRepository.create(sponsorshipModel);
+            }
+            catch (error) {
+                return null;
+            }
+        });
+    }
+    static getLastSponsorshipToBeNotified(userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield adSponsorshipRepository.getOne({ id: userId, targetHasConnected: true, userFromHasBeenNotified: false });
             }
             catch (error) {
                 return null;

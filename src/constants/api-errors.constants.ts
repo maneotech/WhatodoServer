@@ -123,5 +123,6 @@ export enum ApiError {
     AD_INSERT_DB,
     AD_EARN_TOKEN,
     AD_SPONSORSHIP_EXISTS,
-    AD_USER_EXISTS
+    AD_USER_EXISTS,
+    AD_DELAY
 }

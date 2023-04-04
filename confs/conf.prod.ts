@@ -26,6 +26,5 @@ export const ConfProd : IConf  = {
                     useUnifiedTopology: true
                 }
             }
-    },
-    staticRelativePath : '../static'
+    }
 }

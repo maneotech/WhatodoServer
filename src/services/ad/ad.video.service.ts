@@ -67,4 +67,30 @@ export class AdVideoService {
             return false;
         }
     }
+
+    static async isLastVideoDelayRespected(userId: ObjectId): Promise<boolean> {
+        try {
+            var doc = await adVideoRepository.getOne({ user: userId }, null, null, { sort: { createdAt: -1 } });
+            if (doc == null) {
+                return true;
+            }
+
+            const now = new Date();
+            const lastDate = doc.createdAt;
+
+            const timeDiff = now.getTime() - lastDate.getTime();
+            const diffDays = timeDiff / (1000 * 3600 * 24);
+
+            if (diffDays >= 3) {
+                return true;
+            }
+            else {
+                return false;
+            }
+
+        }
+        catch (error) {
+            return true;
+        }
+    }
 }

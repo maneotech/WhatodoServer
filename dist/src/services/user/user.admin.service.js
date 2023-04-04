@@ -15,6 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserAdminService = void 0;
 const user_constant_1 = require("../../constants/user/user.constant");
 const user_repository_1 = __importDefault(require("../../repositories/user/user.repository"));
+const ad_sponsorship_service_1 = require("../ad/ad.sponsorship.service");
 const mail_service_1 = require("../mail.service");
 const utilities_service_1 = require("../utilities.service");
 const user_service_1 = __importDefault(require("./user.service"));
@@ -46,6 +47,8 @@ class UserAdminService {
                 return user_constant_1.UserRequestError.EMAIL_ALREADY_USED;
             const result = yield userRepository.create(user);
             if (result) {
+                //no error management because no needed.
+                yield ad_sponsorship_service_1.AdSponsorshipService.validateSponsorship(user.email);
                 response = user_constant_1.UserRequestError.NO_ERROR;
                 response.data = result;
             }
