@@ -28,6 +28,7 @@ exports.ConfProd = {
                 useUnifiedTopology: true
             }
         }
-    }
+    },
+    urlPort: "http://localhost:3010/"
 };
 //# sourceMappingURL=conf.prod.js.map

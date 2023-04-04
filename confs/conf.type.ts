@@ -54,5 +54,6 @@ export interface IConf {
     },
     db: {
         local : IConfDb
-    }
+    },
+    urlPort: string
 }

@@ -41,7 +41,7 @@ class AdVideoService {
                     hasEnded: false,
                     clicked: false,
                 };
-                return yield adVideoRepository.create(videoModel);
+                return yield adVideoRepository.createVideo(videoModel);
             }
             catch (error) {
                 return null;

@@ -1,5 +1,5 @@
 import { DateConstants } from "../src/constants/date.constant";
-import { ConfEnvironment, IConf, IConfAuthentification, IConfDb } from "./conf.type";
+import { ConfEnvironment, IConf } from "./conf.type";
 
 export const ConfProd : IConf  = {
     env : ConfEnvironment.PRODUCTION,
@@ -26,5 +26,6 @@ export const ConfProd : IConf  = {
                     useUnifiedTopology: true
                 }
             }
-    }
+    },
+    urlPort: "http://localhost:3010/"
 }

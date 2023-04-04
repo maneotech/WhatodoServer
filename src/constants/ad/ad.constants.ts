@@ -23,8 +23,8 @@ export const AdRequestError = {
 
 
 export const AdVideoObjectList: AdContentModel[] = [
-    new AdContentModel("b5f30c84-8ac4-4ebc-ad86-2f8612c52e1c", "Quentin Rathonie", InternalPathConstants.adVideos + '6446706906_iptv_fr.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", LanguageEnum.FR, PlatformEnum.ALL),
-    new AdContentModel("4027dd64-c645-4638-a251-bbbab12a5ac9", "Quentin Rathonie", InternalPathConstants.adVideos + '6446706906_iptv_en.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", LanguageEnum.EN, PlatformEnum.ALL),
-    new AdContentModel("e0da8960-50e1-45d1-9f1d-09c0e645531c", "Quentin Rathonie", InternalPathConstants.adVideos + '6446706906_iptv_es.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", LanguageEnum.ES, PlatformEnum.ALL),
+    new AdContentModel(InternalPathConstants.adVideos + '6446706906_iptv_fr.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "b5f30c84-8ac4-4ebc-ad86-2f8612c52e1c", "Quentin Rathonie", LanguageEnum.FR, PlatformEnum.ALL),
+    new AdContentModel(InternalPathConstants.adVideos + '6446706906_iptv_en.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "4027dd64-c645-4638-a251-bbbab12a5ac9", "Quentin Rathonie", LanguageEnum.EN, PlatformEnum.ALL),
+    new AdContentModel(InternalPathConstants.adVideos + '6446706906_iptv_es.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "e0da8960-50e1-45d1-9f1d-09c0e645531c", "Quentin Rathonie", LanguageEnum.ES, PlatformEnum.ALL),
 
 ]

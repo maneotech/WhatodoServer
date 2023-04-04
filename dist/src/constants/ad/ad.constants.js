@@ -19,8 +19,8 @@ exports.AdRequestError = {
     DELAY_NOT_RESPECTED: { success: false, data: null, message: "3 days are required between two ads", error: api_errors_constants_1.ApiError.AD_DELAY, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
 };
 exports.AdVideoObjectList = [
-    new ad_content_model_1.AdContentModel("b5f30c84-8ac4-4ebc-ad86-2f8612c52e1c", "Quentin Rathonie", internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_fr.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", language_constants_1.LanguageEnum.FR, platform_constants_1.PlatformEnum.ALL),
-    new ad_content_model_1.AdContentModel("4027dd64-c645-4638-a251-bbbab12a5ac9", "Quentin Rathonie", internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_en.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", language_constants_1.LanguageEnum.EN, platform_constants_1.PlatformEnum.ALL),
-    new ad_content_model_1.AdContentModel("e0da8960-50e1-45d1-9f1d-09c0e645531c", "Quentin Rathonie", internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_es.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", language_constants_1.LanguageEnum.ES, platform_constants_1.PlatformEnum.ALL),
+    new ad_content_model_1.AdContentModel(internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_fr.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "b5f30c84-8ac4-4ebc-ad86-2f8612c52e1c", "Quentin Rathonie", language_constants_1.LanguageEnum.FR, platform_constants_1.PlatformEnum.ALL),
+    new ad_content_model_1.AdContentModel(internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_en.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "4027dd64-c645-4638-a251-bbbab12a5ac9", "Quentin Rathonie", language_constants_1.LanguageEnum.EN, platform_constants_1.PlatformEnum.ALL),
+    new ad_content_model_1.AdContentModel(internal_path_constant_1.InternalPathConstants.adVideos + '6446706906_iptv_es.mp4', "https://apps.apple.com/fr/app/play-iptv-player/id6446706906", "e0da8960-50e1-45d1-9f1d-09c0e645531c", "Quentin Rathonie", language_constants_1.LanguageEnum.ES, platform_constants_1.PlatformEnum.ALL),
 ];
 //# sourceMappingURL=ad.constants.js.map

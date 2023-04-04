@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.AdContentModel = void 0;
 class AdContentModel {
-    constructor(companyId, companyName, urlSrc, redirectTo, language, platform) {
+    constructor(urlSrc, redirectTo, companyId, companyName, language, platform) {
         this.companyId = companyId;
         this.companyName = companyName;
         this.urlSrc = urlSrc;

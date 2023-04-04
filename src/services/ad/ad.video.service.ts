@@ -11,7 +11,7 @@ const adVideoRepository = new AdVideoRepository();
 
 export class AdVideoService {
 
-    static async startAd(language: LanguageEnum, platform: PlatformEnum, userId: ObjectId): Promise<IAdVideoDocument> {
+    static async startAd(language: LanguageEnum, platform: PlatformEnum, userId: ObjectId): Promise<AdContentModel> {
 
         var adVideoObjectList: AdContentModel[] = [];
 
@@ -38,7 +38,7 @@ export class AdVideoService {
                 clicked: false,
             };
 
-            return await adVideoRepository.create(videoModel);
+            return await adVideoRepository.createVideo(videoModel);
         }
         catch (error) {
             return null;

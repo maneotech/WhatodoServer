@@ -21,9 +21,9 @@ export async function startAd(req: Request, res: Response) {
         return RequestService.send(res, AdRequestError.BODY_ERROR);
     }
 
-    if (await AdVideoService.isLastVideoDelayRespected(user._id) == false) {
+    /*if (await AdVideoService.isLastVideoDelayRespected(user._id) == false) {
         return RequestService.send(res, AdRequestError.DELAY_NOT_RESPECTED);
-    }
+    }*/
 
     const response = AdRequestError.NO_ERROR;
     var language: LanguageEnum = EnumService.fromLanguageStringToEnum(body.language);
