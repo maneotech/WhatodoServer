@@ -12,6 +12,7 @@ export class AdSponsorshipService {
             return await adSponsorshipRepository.exists({emailTarget: email});
         }
         catch (error) {
+            console.log(error);
             return true;
         }
     }
@@ -46,10 +47,20 @@ export class AdSponsorshipService {
 
     static async getLastSponsorshipToBeNotified(userId: ObjectId) : Promise<IAdSponsorshipDocument>{
         try {
-            return await adSponsorshipRepository.getOne({id: userId, targetHasConnected: true, userFromHasBeenNotified: false});
+            return await adSponsorshipRepository.getOne({userFrom: userId, targetHasConnected: true, userFromHasBeenNotified: false});
         }
         catch (error) {
             return null;
+        }
+    }
+
+    static async notifySponsorship(lastSponsorshipEmail: String, userId: ObjectId): Promise<boolean>{
+        try {
+            var doc = await adSponsorshipRepository.updateOne({userFrom: userId, emailTarget: lastSponsorshipEmail}, {userFromHasBeenNotified: true});
+            return doc ? true : false;
+        }
+        catch {
+            return false
         }
     }
 }

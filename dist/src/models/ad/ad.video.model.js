@@ -13,7 +13,6 @@ const schema = new mongoose_service_1.MongooseCustomSchema({
     user: {
         type: mongoose_1.default.Schema.Types.ObjectId,
         ref: user_model_1.UserModel,
-        required: true,
     },
     adContent: {
         type: mongoose_1.default.Schema.Types.Mixed,
@@ -21,11 +20,9 @@ const schema = new mongoose_service_1.MongooseCustomSchema({
     },
     hasEnded: {
         type: Boolean,
-        required: true
     },
     clicked: {
         type: Boolean,
-        required: true
     }
 });
 exports.AdVideoModel = databases_service_1.db.local.model('AdVideo', schema);

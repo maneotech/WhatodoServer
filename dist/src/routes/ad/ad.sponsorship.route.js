@@ -29,5 +29,6 @@ const controllers = __importStar(require("../../controllers/ad/ad.sponsorship.co
 const authentification_middleware_1 = require("../../middlewares/authentification.middleware");
 const router = async_express_service_1.AsyncExpressService.getAsyncRouter();
 router.use('/create', (0, authentification_middleware_1.authentificate)(), controllers.createSponsorship);
+router.use('/notify', (0, authentification_middleware_1.authentificate)(), controllers.notifySponsorship);
 exports.adSponsorshipRouter = router;
 //# sourceMappingURL=ad.sponsorship.route.js.map

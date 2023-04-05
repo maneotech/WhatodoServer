@@ -11,7 +11,7 @@ const adVideoRepository = new AdVideoRepository();
 
 export class AdVideoService {
 
-    static async startAd(language: LanguageEnum, platform: PlatformEnum, userId: ObjectId): Promise<AdContentModel> {
+    static async startAd(language: LanguageEnum, platform: PlatformEnum, userId: ObjectId): Promise<IAdVideoModel> {
 
         var adVideoObjectList: AdContentModel[] = [];
 

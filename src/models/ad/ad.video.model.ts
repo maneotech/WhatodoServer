@@ -9,7 +9,6 @@ const schema = new MongooseCustomSchema({
     user: {
         type: mongoose.Schema.Types.ObjectId,
         ref: UserModel,
-        required: true,
     },
 
     adContent: {
@@ -18,19 +17,17 @@ const schema = new MongooseCustomSchema({
     },
     hasEnded : {
         type: Boolean,
-        required: true
     },
     clicked: {
         type: Boolean,
-        required: true
     }
 });
 
 export interface IAdVideoModel extends IModel {
-    user: ObjectId;
+    user?: ObjectId;
     adContent: AdContentModel;
-    hasEnded:boolean;
-    clicked:boolean;
+    hasEnded?:boolean;
+    clicked?:boolean;
 }
 
 export interface IAdVideoDocument extends mongoose.Document<ObjectId>, IAdVideoModel { }

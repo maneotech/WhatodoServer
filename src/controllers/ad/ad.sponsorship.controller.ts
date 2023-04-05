@@ -21,11 +21,11 @@ export async function createSponsorship(req: Request, res: Response) {
         return RequestService.send(res, AdRequestError.BODY_ERROR);
     }
 
-    if (AdSponsorshipService.doesSponsorshipExist(body.email)) {
+    if (await AdSponsorshipService.doesSponsorshipExist(body.email)) {
         return RequestService.send(res, AdRequestError.SPONSORSHIP_ALREADY_EXIST);
     }
 
-    if (UserService.emailAlreadyUsed(body.email)) {
+    if (await UserService.emailAlreadyUsed(body.email)) {
         return RequestService.send(res, AdRequestError.USER_ALREADY_EXIST);
     }
 
@@ -39,5 +39,29 @@ export async function createSponsorship(req: Request, res: Response) {
     const response = AdRequestError.NO_ERROR;
     return RequestService.send(res, response);
 }
+
+export async function notifySponsorship(req: Request, res: Response) {
+    const user = req.user;
+    const body = req.body;
+
+    if (UtilitiesService.isEmpty(body)) {
+        return RequestService.send(res, AdRequestError.BODY_EMPTY);
+    }
+    if (!body.lastSponsorshipEmail) {
+        return RequestService.send(res, AdRequestError.BODY_ERROR);
+    }
+
+    const result = await AdSponsorshipService.notifySponsorship(body.lastSponsorshipEmail, user._id);
+
+    if (!result) {
+        return RequestService.send(res, AdRequestError.INSERTING_DB);
+    }
+
+
+    const response = AdRequestError.NO_ERROR;
+    return RequestService.send(res, response);
+
+}
+
 
 

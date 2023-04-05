@@ -22,6 +22,7 @@ class AdSponsorshipService {
                 return yield adSponsorshipRepository.exists({ emailTarget: email });
             }
             catch (error) {
+                console.log(error);
                 return true;
             }
         });
@@ -56,10 +57,21 @@ class AdSponsorshipService {
     static getLastSponsorshipToBeNotified(userId) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield adSponsorshipRepository.getOne({ id: userId, targetHasConnected: true, userFromHasBeenNotified: false });
+                return yield adSponsorshipRepository.getOne({ userFrom: userId, targetHasConnected: true, userFromHasBeenNotified: false });
             }
             catch (error) {
                 return null;
+            }
+        });
+    }
+    static notifySponsorship(lastSponsorshipEmail, userId) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                var doc = yield adSponsorshipRepository.updateOne({ userFrom: userId, emailTarget: lastSponsorshipEmail }, { userFromHasBeenNotified: true });
+                return doc ? true : false;
+            }
+            catch (_a) {
+                return false;
             }
         });
     }

@@ -20,10 +20,15 @@ class AdVideoRepository extends repository_service_1.default {
         super(ad_video_model_1.AdVideoModel);
     }
     createVideo(adVideoModel) {
+        var adVideoModel;
         return __awaiter(this, void 0, void 0, function* () {
             var doc = yield this.create(adVideoModel);
             if (doc) {
-                return new ad_content_model_1.AdContentModel(doc.adContent.urlSrc, doc.adContent.redirectTo);
+                adVideoModel = {
+                    _id: doc.id,
+                    adContent: new ad_content_model_1.AdContentModel(doc.adContent.urlSrc, doc.adContent.redirectTo)
+                };
+                return adVideoModel;
             }
             else {
                 return null;
