@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.UserLoginRequestError = exports.UserRequestError = exports.UserFieldModelRequired = exports.UserSex = exports.UserStatus = exports.UserRole = void 0;
+exports.UserLoginRequestError = exports.UserRequestError = exports.UserFieldModelRequired = exports.UserThirdPart = exports.UserStatus = exports.UserRole = void 0;
 const api_errors_constants_1 = require("../api-errors.constants");
 const httpstatuscode_constant_1 = require("../httpstatuscode.constant");
 var UserRole;
@@ -13,12 +13,13 @@ var UserStatus;
     UserStatus["enabled"] = "enabled";
     UserStatus["disabled"] = "disabled";
 })(UserStatus = exports.UserStatus || (exports.UserStatus = {}));
-var UserSex;
-(function (UserSex) {
-    UserSex["male"] = "male";
-    UserSex["female"] = "female";
-    UserSex["other"] = "other";
-})(UserSex = exports.UserSex || (exports.UserSex = {}));
+var UserThirdPart;
+(function (UserThirdPart) {
+    UserThirdPart["NO"] = "no";
+    UserThirdPart["FACEBOOK"] = "facebook";
+    UserThirdPart["GOOGLE"] = "google";
+    UserThirdPart["APPLE"] = "apple";
+})(UserThirdPart = exports.UserThirdPart || (exports.UserThirdPart = {}));
 exports.UserFieldModelRequired = {
     [UserRole.user]: ['firstname', 'email', 'password'],
 };
@@ -38,5 +39,9 @@ exports.UserLoginRequestError = {
     ID_INVALID: { success: false, data: null, message: "identifiant or password is invalid", error: api_errors_constants_1.ApiError.USER_LOGIN_ID_INVALID, status: httpstatuscode_constant_1.HttpStatusCode.BadRequest },
     ID_EMPTY: { success: false, data: null, message: "identifiant or password can't be empty", error: api_errors_constants_1.ApiError.USER_LOGIN_ID_EMPTY, status: httpstatuscode_constant_1.HttpStatusCode.BadRequest },
     STATUS_DISABLED: { success: false, data: null, message: "status of user is disabled", error: api_errors_constants_1.ApiError.USER_LOGIN_STATUS_DISABLED, status: httpstatuscode_constant_1.HttpStatusCode.BadRequest },
+    BODY_EMPTY: { success: false, data: null, message: "body is empty", error: api_errors_constants_1.ApiError.USER_LOGIN_BODY_EMPTY, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    BODY_ERROR: { success: false, data: null, message: "body error", error: api_errors_constants_1.ApiError.USER_LOGIN_BODY_EMPTY, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    USER_EMPTY: { success: false, data: null, message: "user empty", error: api_errors_constants_1.ApiError.USER_LOGIN_BODY_EMPTY, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
+    WRONG_THIRD_TYPE: { success: false, data: null, message: "wrong third type", error: api_errors_constants_1.ApiError.USER_WRONG_THIRD_TYPE, status: httpstatuscode_constant_1.HttpStatusCode.InternalServerError },
 };
 //# sourceMappingURL=user.constant.js.map

@@ -27,5 +27,5 @@ export const ConfDev : IConf  = {
                 }
             }
     },
-    urlPort: "http://localhost:3010/"
+    urlPort: "http://0.0.0.0:3010/"
 }

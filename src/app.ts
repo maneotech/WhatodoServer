@@ -79,7 +79,7 @@ app.use('/', (req, res, next) => {
 });
 
 // Listien on port
-server.listen(conf.port, () => {
+server.listen(conf.port, "0.0.0.0", () => {
     console.log('Server listening on port - HTTP : ' + conf.port);
 });
 

@@ -10,11 +10,27 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.UserRegisterService = void 0;
+const user_constant_1 = require("../../constants/user/user.constant");
 const user_admin_service_1 = require("./user.admin.service");
 class UserRegisterService {
     static register(data) {
         return __awaiter(this, void 0, void 0, function* () {
-            return user_admin_service_1.UserAdminService.create(data);
+            return yield user_admin_service_1.UserAdminService.create(data, user_constant_1.UserThirdPart.NO);
+        });
+    }
+    static registerWithGoogle(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield user_admin_service_1.UserAdminService.create(data, user_constant_1.UserThirdPart.GOOGLE);
+        });
+    }
+    static registerWithFacebook(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield user_admin_service_1.UserAdminService.create(data, user_constant_1.UserThirdPart.FACEBOOK);
+        });
+    }
+    static registerWithApple(data) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return yield user_admin_service_1.UserAdminService.create(data, user_constant_1.UserThirdPart.APPLE);
         });
     }
 }

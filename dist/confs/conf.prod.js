@@ -29,6 +29,6 @@ exports.ConfProd = {
             }
         }
     },
-    urlPort: "http://localhost:3010/"
+    urlPort: "http://0.0.0.0:3010/"
 };
 //# sourceMappingURL=conf.prod.js.map

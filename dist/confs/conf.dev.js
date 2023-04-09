@@ -29,6 +29,6 @@ exports.ConfDev = {
             }
         }
     },
-    urlPort: "http://localhost:3010/"
+    urlPort: "http://0.0.0.0:3010/"
 };
 //# sourceMappingURL=conf.dev.js.map

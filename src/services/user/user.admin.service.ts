@@ -1,4 +1,4 @@
-import { UserRequestError, UserFieldModelRequired, UserRole } from "../../constants/user/user.constant";
+import { UserRequestError, UserFieldModelRequired, UserRole, UserThirdPart } from "../../constants/user/user.constant";
 import { ObjId } from "../../interfaces/model.interface";
 import { IResponse } from "../../interfaces/request.interface";
 import { IUserDocument, IUserModel } from "../../models/user/user.model";
@@ -12,7 +12,7 @@ const userRepository = new UserRepository();
 
 export class UserAdminService {
 
-    static async create(data : any) : Promise<IResponse<IUserDocument>> {
+    static async create(data : any, userThirdPart: UserThirdPart) : Promise<IResponse<IUserDocument>> {
         let response : IResponse = UserRequestError.UNKNOWN_ERROR;
 
         if (UtilitiesService.isEmpty(data))
@@ -24,6 +24,7 @@ export class UserAdminService {
         if (!data.password || !data.password.length)
             return UserRequestError.PASSWORD_IS_EMPTY; 
 
+        
 
         const keysRequired = UserFieldModelRequired[UserRole.user];
 
@@ -40,7 +41,8 @@ export class UserAdminService {
         let user : IUserModel = {
             email : email,
             firstname : data.firstname,
-            password : UserService.hashPassword(data.password)
+            password : UserService.hashPassword(data.password),
+            thirdPart: userThirdPart
         }
         
         if (await UserService.emailAlreadyUsed(user.email))

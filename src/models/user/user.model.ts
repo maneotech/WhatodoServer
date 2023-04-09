@@ -1,5 +1,5 @@
 import mongoose, { ObjectId } from 'mongoose';
-import { UserRole, UserSex, UserStatus } from '../../constants/user/user.constant';
+import { UserStatus, UserThirdPart } from '../../constants/user/user.constant';
 import { IModel } from '../../interfaces/model.interface';
 import { db } from '../../services/databases.service';
 import { MongooseCustomSchema } from '../../services/mongoose.service';
@@ -26,6 +26,11 @@ const schema = new MongooseCustomSchema({
     token: {
         type: Number,
         default: 3
+    },
+    thirdPart : {
+        type: String,
+        enum: UserThirdPart,
+        required: true
     }
 });
 
@@ -35,6 +40,7 @@ export interface IUserModel extends IModel {
     password? : string;
     status? : UserStatus;
     token?: number;
+    thirdPart: UserThirdPart
 }
 
 export interface IUserDocument extends mongoose.Document<ObjectId>, IUserModel {}

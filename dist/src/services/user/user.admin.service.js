@@ -21,7 +21,7 @@ const utilities_service_1 = require("../utilities.service");
 const user_service_1 = __importDefault(require("./user.service"));
 const userRepository = new user_repository_1.default();
 class UserAdminService {
-    static create(data) {
+    static create(data, userThirdPart) {
         return __awaiter(this, void 0, void 0, function* () {
             let response = user_constant_1.UserRequestError.UNKNOWN_ERROR;
             if (utilities_service_1.UtilitiesService.isEmpty(data))
@@ -41,7 +41,8 @@ class UserAdminService {
             let user = {
                 email: email,
                 firstname: data.firstname,
-                password: user_service_1.default.hashPassword(data.password)
+                password: user_service_1.default.hashPassword(data.password),
+                thirdPart: userThirdPart
             };
             if (yield user_service_1.default.emailAlreadyUsed(user.email))
                 return user_constant_1.UserRequestError.EMAIL_ALREADY_USED;

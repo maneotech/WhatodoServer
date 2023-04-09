@@ -25,6 +25,11 @@ const schema = new mongoose_service_1.MongooseCustomSchema({
     token: {
         type: Number,
         default: 3
+    },
+    thirdPart: {
+        type: String,
+        enum: user_constant_1.UserThirdPart,
+        required: true
     }
 });
 schema.index({ email: -1 });

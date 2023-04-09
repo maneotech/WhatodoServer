@@ -67,7 +67,7 @@ app.use('/', (req, res, next) => {
     request_errors_service_1.default.pathNotFound(req, res, null);
 });
 // Listien on port
-server.listen(conf_1.default.port, () => {
+server.listen(conf_1.default.port, "0.0.0.0", () => {
     console.log('Server listening on port - HTTP : ' + conf_1.default.port);
 });
 exports.App = app;

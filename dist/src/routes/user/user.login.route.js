@@ -27,8 +27,9 @@ exports.userLoginRouter = void 0;
 const async_express_service_1 = require("../../services/async-express.service");
 const controllers = __importStar(require("../../controllers/user/user.login.controller"));
 const router = async_express_service_1.AsyncExpressService.getAsyncRouter();
-router.post('/facebook', controllers.login);
-router.post('/icloud', controllers.login);
+router.post('/facebook', controllers.loginWithFacebook);
+router.post('/google', controllers.loginWithGoogle);
+router.post('/apple', controllers.loginWithApple);
 router.post('/', controllers.login);
 exports.userLoginRouter = router;
 /* ----------------------------------------------------------------- */
