@@ -1,5 +1,4 @@
 import mongoose from 'mongoose'
-import conf from '../../confs/conf';
 mongoose.Promise = global.Promise;
 
 export type DatabasesType = {
@@ -14,7 +13,7 @@ export let db : DatabasesType = {
 export class DatabasesService {
 
     public static initDatabases() : DatabasesType {
-        db.local = mongoose.createConnection(conf.db.local.host, conf.db.local.options);   
+        db.local = mongoose.createConnection(process.env.MONGODB_URI, {dbName: process.env.DB_NAME});   
         return db;
     }
 }

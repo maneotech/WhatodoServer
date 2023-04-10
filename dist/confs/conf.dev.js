@@ -20,7 +20,7 @@ exports.ConfDev = {
     },
     db: {
         local: {
-            host: "mongodb://127.0.0.1:27017/whatodo",
+            host: "mongodb://127.0.0.1:27017/",
             options: {
                 user: "",
                 pass: "",

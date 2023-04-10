@@ -1,9 +1,9 @@
 import path from 'path'
-import conf from '../../confs/conf';
+var ip = require('ip');
 
 const root = path.join(__dirname, '../../../');
 const relativeAssetsPathFromRoot = 'assets/';
-const websiteRoot = conf.urlPort + 'static/';
+const websiteRoot = ip.address() + ":" + process.env.PORT + '/static/';
 // Path of app directory
 export const InternalPathConstants = {
     root : root,

@@ -1,3 +1,5 @@
+//require('dotenv').config();
+
 // Databases
 import { DatabasesService } from './services/databases.service'
 DatabasesService.initDatabases();
@@ -11,8 +13,6 @@ import { AsyncExpressService } from './services/async-express.service';
 import http from 'http';
 import bodyParser from 'body-parser';
 import cors from 'cors';
-// Conf
-import conf from '../confs/conf';
 // Middlewares
 import { clientIpMiddleware } from './middlewares/clientip.middleware';
 import { firewallMiddleware } from './middlewares/firewall.middleware';
@@ -32,7 +32,7 @@ console.log("\n\
 |-------------------------------------------------------| \n\
 |-------------------------------------------------------| \n\
 |------------        SERVER STARTING...     ------------| \n\
-|------------       MODE : " + conf.env + "      ------------| \n\
+|------------       MODE : " + process.env.MODE + "      ------------| \n\
 |-------------------------------------------------------| \n\
 |-------------------------------------------------------| \n\
  ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞ ͞   \n\
@@ -52,7 +52,7 @@ declare global {
 }
 
 // Middlewares
-app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.json({ limit: '50mb' }));
 app.use(cors());
 app.use(clientIpMiddleware);
 app.use(firewallMiddleware)
@@ -79,8 +79,8 @@ app.use('/', (req, res, next) => {
 });
 
 // Listien on port
-server.listen(conf.port, "0.0.0.0", () => {
-    console.log('Server listening on port - HTTP : ' + conf.port);
+server.listen(parseInt(process.env.PORT), "0.0.0.0", () => {
+    console.log('Server listening on port - HTTP : ' + process.env.PORT);
 });
 
 export const App = app;

@@ -1,4 +1,4 @@
-import conf from '../../../confs/conf';
+import { DateConstants } from '../../constants/date.constant';
 import { IJWTTokenPayload, UserTokenRequestError, UserTokenStatus, UserTokenType } from '../../constants/user/user.token.constant';
 import { ObjId } from '../../interfaces/model.interface';
 import { IResponse } from '../../interfaces/request.interface';
@@ -31,8 +31,8 @@ export class UserTokenService {
                 status : UserTokenStatus.enabled
             }
 
-            data.expireAt = new Date(now.getTime() + conf.authentification.tokenExpireAfter);
-            data.refreshExpireAt = new Date(now.getTime() + conf.authentification.refreshTokenExpireAfter);
+            data.expireAt = new Date(now.getTime() + 180 * DateConstants.day);
+            data.refreshExpireAt = new Date(now.getTime() + 365 * DateConstants.day);
 
             let doc = await userTokenRepository.create(data);
             if (doc) {
@@ -94,7 +94,7 @@ export class UserTokenService {
             return UserTokenRequestError.REFRESH_TOKEN_INVALID;
         if (doc.refreshExpireAt && now.getTime() > doc.refreshExpireAt.getTime())
             return UserTokenRequestError.REFRESH_TOKEN_EXPIRED;
-        if (doc.refreshedAt && now.getTime() > doc.refreshedAt.getTime() + conf.authentification.delayRefreshMultiUse)
+        if (doc.refreshedAt && now.getTime() > doc.refreshedAt.getTime() + 1 * DateConstants.day)
             return UserTokenRequestError.REFRESH_TOKEN_ALREADY_USED;
 
         const decoded : IJWTTokenPayload = AuthentificationService.decodeJWTToken(refreshToken);

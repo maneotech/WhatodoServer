@@ -20,7 +20,7 @@ exports.ConfProd = {
     },
     db: {
         local: {
-            host: "127.0.0.1",
+            host: "mongodb://127.0.0.1:27017/",
             options: {
                 user: "test",
                 pass: "test",

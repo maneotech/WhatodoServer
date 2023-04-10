@@ -1,7 +1,6 @@
 
 import crypto from 'crypto'
 import { ObjectId } from 'mongoose';
-import conf from '../../../confs/conf';
 import { UserRole } from '../../constants/user/user.constant';
 import { ObjId } from '../../interfaces/model.interface';
 import UserRepository from '../../repositories/user/user.repository';
@@ -11,7 +10,7 @@ const userRepository = new UserRepository();
 export default class UserService {
 
     static hashPassword(password : string) : string {
-        const hash = crypto.createHmac('sha256', conf.hashPasswordSecret);
+        const hash = crypto.createHmac('sha256', process.env.HASH_PWD_SECRET);
         hash.update(password);
         return hash.digest('hex');
     }

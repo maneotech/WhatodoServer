@@ -1,7 +1,6 @@
 import { Request } from "express";
 import { IJWTTokenPayload, UserTokenType } from "../constants/user/user.token.constant";
 import jwt from 'jsonwebtoken'
-import conf from "../../confs/conf";
 
 export class AuthentificationService {
     public static extractBearerToken(req : Request) : string {
@@ -23,13 +22,13 @@ export class AuthentificationService {
                 userId : userId,
                 tokenId : tokenId,
                 type : UserTokenType.normal 
-            } as IJWTTokenPayload, conf.authentification.tokenSecret)
+            } as IJWTTokenPayload, process.env.TOKEN_SECRET)
         else if (type == UserTokenType.refresh)
             return jwt.sign({
                 userId : userId,
                 tokenId : tokenId,
                 type : UserTokenType.refresh 
-            } as IJWTTokenPayload, conf.authentification.refreshTokenSecret);
+            } as IJWTTokenPayload, process.env.REFRESH_TOKEN_SECRET);
         return null;
     }
 
