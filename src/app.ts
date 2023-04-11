@@ -1,4 +1,4 @@
-//require('dotenv').config();
+require('dotenv').config();
 
 // Databases
 import { DatabasesService } from './services/databases.service'
