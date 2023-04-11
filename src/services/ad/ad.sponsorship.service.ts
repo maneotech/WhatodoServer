@@ -12,7 +12,6 @@ export class AdSponsorshipService {
             return await adSponsorshipRepository.exists({emailTarget: email});
         }
         catch (error) {
-            console.log(error);
             return true;
         }
     }

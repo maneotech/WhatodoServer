@@ -22,7 +22,6 @@ export default class PlaceService {
 
         //1. prepare google map request the best as possible
 
-        console.log(requestPlaceModel.movingTypes);
 
         const lat = requestPlaceModel.latitude;
         const lng = requestPlaceModel.longitude;
@@ -64,7 +63,6 @@ export default class PlaceService {
             keyword + "&key=" +
             googleApiKey;
 
-        console.log(url);
         //3. parse the result and pick the best one as possible
         // check if the one selected has already been done (check database)
         var data = null;
@@ -73,7 +71,6 @@ export default class PlaceService {
             data = JSON.parse(await PlaceService.fetchApi(url));
         }
         catch (error) {
-            console.log(error)
             return PlaceRequestError.FETCHING_API;
         }
 
@@ -107,7 +104,6 @@ export default class PlaceService {
                 return response;
             }
             catch (error) {
-                console.log(error);
                 return PlaceRequestError.FETCHING_API;
             }
         }
@@ -195,7 +191,6 @@ export default class PlaceService {
             return await showedPlaceRepository.create(showedPlaceModel);
         }
         catch (e) {
-            console.log(e);
             return null;
         }
     }

@@ -27,7 +27,6 @@ class RequestService {
         }
     }
     static redirect(res, url, code = httpstatuscode_constant_1.HttpStatusCode.PermanentRedirect) {
-        console.log("Url : " + url + " - code : " + code);
         return res.redirect(code, url);
     }
 }

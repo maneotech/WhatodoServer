@@ -6,9 +6,9 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.InternalPathConstants = void 0;
 const path_1 = __importDefault(require("path"));
 var ip = require('ip');
-const root = path_1.default.join(__dirname, '../../../');
+const root = path_1.default.join(__dirname, '../../');
 const relativeAssetsPathFromRoot = 'assets/';
-const websiteRoot = ip.address() + ":" + process.env.PORT + '/static/';
+const websiteRoot = "https://api.dev.whatodo.maneotech.fr/static/";
 // Path of app directory
 exports.InternalPathConstants = {
     root: root,

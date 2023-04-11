@@ -28,8 +28,6 @@ function getOnePlace(req, res) {
         if (place_service_1.default.canBeCasted(body) == false) {
             return request_service_1.default.send(res, place_constants_1.PlaceRequestError.BODY_ERROR);
         }
-        console.log("user.token");
-        console.log(user.token);
         if (user.token != null && user.token < 1) {
             return request_service_1.default.send(res, place_constants_1.PlaceRequestError.NOT_ENOUGH_TOKEN);
         }
@@ -77,7 +75,6 @@ function refusePlace(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         const body = req.body;
         const user = req.user;
-        console.log(body);
         if (utilities_service_1.UtilitiesService.isEmpty(body)) {
             return request_service_1.default.send(res, place_constants_1.PlaceRequestError.BODY_EMPTY);
         }

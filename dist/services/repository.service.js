@@ -633,7 +633,6 @@ class Repository {
             else {
                 selectors['$or'] = orConditionResearch;
             }
-            //console.log("Selectors : " + JSON.stringify(selectors, null, 2));
             let result = yield this.get(selectors, populates, projection, options);
             return (result);
         });

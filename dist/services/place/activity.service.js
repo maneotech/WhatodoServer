@@ -58,7 +58,6 @@ class ActivityService {
             throw new Error();
         }
         type = types[0];
-        console.log(type);
         return type;
     }
 }

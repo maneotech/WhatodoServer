@@ -658,7 +658,6 @@ export default class Repository<IDocument extends IDocumentDefault = IDocumentDe
       selectors['$or'] = orConditionResearch;
     }
 
-    //console.log("Selectors : " + JSON.stringify(selectors, null, 2));
     let result = await this.get(selectors, populates, projection, options);
     return (result);
   }

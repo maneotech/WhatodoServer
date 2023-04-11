@@ -24,7 +24,6 @@ class PlaceService {
         return __awaiter(this, void 0, void 0, function* () {
             let response = place_constants_1.PlaceRequestError.NO_ERROR;
             //1. prepare google map request the best as possible
-            console.log(requestPlaceModel.movingTypes);
             const lat = requestPlaceModel.latitude;
             const lng = requestPlaceModel.longitude;
             const location = lat + "," + lng;
@@ -57,7 +56,6 @@ class PlaceService {
                 maxprice + "&keyword=" +
                 keyword + "&key=" +
                 googleApiKey;
-            console.log(url);
             //3. parse the result and pick the best one as possible
             // check if the one selected has already been done (check database)
             var data = null;
@@ -65,7 +63,6 @@ class PlaceService {
                 data = JSON.parse(yield PlaceService.fetchApi(url));
             }
             catch (error) {
-                console.log(error);
                 return place_constants_1.PlaceRequestError.FETCHING_API;
             }
             if (data.results) {
@@ -94,7 +91,6 @@ class PlaceService {
                     return response;
                 }
                 catch (error) {
-                    console.log(error);
                     return place_constants_1.PlaceRequestError.FETCHING_API;
                 }
             }
@@ -165,7 +161,6 @@ class PlaceService {
                 return yield showedPlaceRepository.create(showedPlaceModel);
             }
             catch (e) {
-                console.log(e);
                 return null;
             }
         });

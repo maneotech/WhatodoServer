@@ -24,7 +24,6 @@ class PlaceService {
         return __awaiter(this, void 0, void 0, function* () {
             let response = place_constants_1.PlaceRequestError.NO_ERROR;
             //1. prepare google map request the best as possible
-            console.log(requestPlaceModel.movingTypes);
             const lat = requestPlaceModel.latitude;
             const lng = requestPlaceModel.longitude;
             const location = lat + "," + lng;

@@ -1,10 +1,10 @@
 "use strict";
-//require('dotenv').config();
 var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.App = void 0;
+require('dotenv').config();
 // Databases
 const databases_service_1 = require("./services/databases.service");
 databases_service_1.DatabasesService.initDatabases();
@@ -58,6 +58,8 @@ router.use('/place', place_route_1.placeRouter);
 router.use('/ad', ad_route_1.adRouter);
 router.use('/home', home_route_1.homeRouter);
 // Static
+console.log(internal_path_constant_1.InternalPathConstants.assets);
+console.log(internal_path_constant_1.InternalPathConstants.adVideos);
 app.use('/static/', express_1.default.static(internal_path_constant_1.InternalPathConstants.assets), function (req, res) {
     return request_errors_service_1.default.fileNotFound(req, res);
 });

@@ -22,7 +22,6 @@ class AdSponsorshipService {
                 return yield adSponsorshipRepository.exists({ emailTarget: email });
             }
             catch (error) {
-                console.log(error);
                 return true;
             }
         });

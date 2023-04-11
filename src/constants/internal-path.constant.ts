@@ -1,9 +1,9 @@
 import path from 'path'
 var ip = require('ip');
 
-const root = path.join(__dirname, '../../../');
+const root = path.join(__dirname, '../../');
 const relativeAssetsPathFromRoot = 'assets/';
-const websiteRoot = ip.address() + ":" + process.env.PORT + '/static/';
+const websiteRoot = "https://api.dev.whatodo.maneotech.fr/static/";
 // Path of app directory
 export const InternalPathConstants = {
     root : root,

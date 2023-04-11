@@ -11,7 +11,7 @@ exports.db = {
 };
 class DatabasesService {
     static initDatabases() {
-        exports.db.local = mongoose_1.default.createConnection(process.env.MONGODB_URI, { dbName: process.env.DB_NAME });
+        exports.db.local = mongoose_1.default.createConnection(process.env.MONGODB_URI, { dbName: process.env.DB_NAME, user: process.env.DB_USER, pass: process.env.DB_PASS });
         return exports.db;
     }
 }

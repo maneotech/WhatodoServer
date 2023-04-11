@@ -19,8 +19,6 @@ export async function getOnePlace(req: Request, res: Response) {
         return RequestService.send(res, PlaceRequestError.BODY_ERROR);
     }
 
-    console.log("user.token");
-    console.log(user.token);
 
     if (user.token != null && user.token < 1) {
         return RequestService.send(res, PlaceRequestError.NOT_ENOUGH_TOKEN);
@@ -79,7 +77,6 @@ export async function refusePlace(req: Request, res: Response) {
     const body = req.body;
     const user = req.user;
 
-    console.log(body);
 
     if (UtilitiesService.isEmpty(body)) {
         return RequestService.send(res, PlaceRequestError.BODY_EMPTY);

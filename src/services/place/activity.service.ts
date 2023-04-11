@@ -74,8 +74,6 @@ export default class ActivityService {
         }
 
         type = types[0];
-        console.log(type);
-
 
         return type;
     }

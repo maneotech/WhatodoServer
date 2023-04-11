@@ -23,7 +23,6 @@ import { InternalPathConstants } from './constants/internal-path.constant';
 // Routers
 import { userRouter } from './routes/user/user.route';
 import { placeRouter } from './routes/place/place.route';
-import { adVideoRouter } from './routes/ad/ad.video.route';
 import { adRouter } from './routes/ad/ad.route';
 import { homeRouter } from './routes/home/home.route';
 
@@ -69,6 +68,9 @@ router.use('/home', homeRouter);
 
 
 // Static
+console.log(InternalPathConstants.assets);
+
+console.log(InternalPathConstants.adVideos);
 app.use('/static/', express.static(InternalPathConstants.assets), function (req, res) {
     return RequestErrors.fileNotFound(req, res);
 });
