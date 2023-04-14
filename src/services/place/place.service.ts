@@ -9,9 +9,12 @@ import { IShowedPlaceDocument, IShowedPlaceModel, ShowedPlaceModel } from "../..
 import ShowedPlaceRepository from "../../repositories/place/place.repository";
 import { UtilitiesService } from "../utilities.service";
 import ActivityService from "./activity.service";
+import { ISelectedPlaceModel } from "../../models/place/selected.place.model";
+import SelectedPlaceRepository from "../../repositories/place/selected.place.repository";
 const https = require('https');
 
 const showedPlaceRepository = new ShowedPlaceRepository();
+const selectedPlaceRepository = new SelectedPlaceRepository();
 
 
 export default class PlaceService {
@@ -63,6 +66,8 @@ export default class PlaceService {
             keyword + "&key=" +
             googleApiKey;
 
+
+        console.log(url);
         //3. parse the result and pick the best one as possible
         // check if the one selected has already been done (check database)
         var data = null;
@@ -87,7 +92,17 @@ export default class PlaceService {
                 });
 
 
-                var responsePlaceModel: ResponsePlaceModel = PlaceService.selectBestResultFromApi(responsePlaceModels);
+                var responsePlaceModel: ResponsePlaceModel = await PlaceService.selectBestResultFromApi(responsePlaceModels);
+
+                /** Save selected Place (avoid same places as a result) */
+                var selectedPlace: ISelectedPlaceModel = {
+                    user: userId,
+                    placeId: responsePlaceModel.place_id
+                }
+                if (await PlaceService.saveSelectedPlace(selectedPlace) == null) {
+                    return PlaceRequestError.SAVE_SELECTED_PLACE;
+                }
+
                 var generatedOptions: GeneratedOptionPlaceModel = {
                     activityType: ActivityService.fromActivityStringToEnum(type),
                     movingType: movingType,
@@ -154,14 +169,33 @@ export default class PlaceService {
         return "";
     }
 
-    static selectBestResultFromApi(responses: ResponsePlaceModel[]): ResponsePlaceModel {
+    static async selectBestResultFromApi(responses: ResponsePlaceModel[]): Promise<ResponsePlaceModel> {
 
         if (responses.length == 0) {
             throw new Error();
         }
 
-        UtilitiesService.shuffleArray(responses);
-        return responses[0];
+        responses.sort((a, b) => b.rating - a.rating);
+
+        var ids : String[] = [];
+        responses.forEach(element => {
+            ids.push(element.place_id);
+        });
+
+        var notAlreadySelected = await PlaceService.getIdsNotAlreadySelected(ids);
+        if (notAlreadySelected.length == 0){
+            // THE PERSON HAS USE 20 TOKEN FROM THE SAME PLACE WITH THE SAME REQUEST PARAMETERS 
+            UtilitiesService.shuffleArray(responses);
+            notAlreadySelected = [responses[0].place_id];
+        }
+
+        var bestResult =  responses.find(response => response.place_id == notAlreadySelected[0]);
+
+        if (!bestResult){
+            throw Error();
+        }
+        
+        return bestResult;
     }
 
     static canBeCasted(json: {}): boolean {
@@ -192,6 +226,50 @@ export default class PlaceService {
         }
         catch (e) {
             return null;
+        }
+    }
+
+    static async saveSelectedPlace(selectedPlaceModel: ISelectedPlaceModel): Promise<ISelectedPlaceModel> {
+        try {
+            return await selectedPlaceRepository.create(selectedPlaceModel);
+        }
+        catch (e) {
+            console.log(e);
+            return null;
+        }
+    }
+
+    static async getIdsNotAlreadySelected(selectedIds: String[]): Promise<String[]> {
+        var notAlreadySelectedIds: String[] = [];
+
+        try {
+            
+            console.log("selectedIds");
+            console.log(selectedIds);
+
+            // find documents in the collection that match the query
+            const query = { placeId: { $in: selectedIds } };
+            var results = await selectedPlaceRepository.get(query);
+            
+            console.log("results");
+            console.log(results);
+
+            // extract the IDs from the returned documents
+            const foundIds = results.map(doc => doc.placeId.toString());
+
+            console.log("foundIds");
+            console.log(foundIds);
+
+            // compare the original array with the found IDs to get the missing IDs
+            notAlreadySelectedIds = selectedIds.filter(id => !foundIds.includes(id.toString()));
+
+            console.log("notAlreadySelectedIds");
+            console.log(notAlreadySelectedIds);
+
+            return notAlreadySelectedIds;
+        }
+        catch (e) {
+            return [];
         }
     }
 

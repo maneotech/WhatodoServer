@@ -17,8 +17,10 @@ const request_place_model_1 = require("../../models/place/request.place.model");
 const place_repository_1 = __importDefault(require("../../repositories/place/place.repository"));
 const utilities_service_1 = require("../utilities.service");
 const activity_service_1 = __importDefault(require("./activity.service"));
+const selected_place_repository_1 = __importDefault(require("../../repositories/place/selected.place.repository"));
 const https = require('https');
 const showedPlaceRepository = new place_repository_1.default();
+const selectedPlaceRepository = new selected_place_repository_1.default();
 class PlaceService {
     static getOnePlace(userId, requestPlaceModel) {
         return __awaiter(this, void 0, void 0, function* () {
@@ -56,6 +58,7 @@ class PlaceService {
                 maxprice + "&keyword=" +
                 keyword + "&key=" +
                 googleApiKey;
+            console.log(url);
             //3. parse the result and pick the best one as possible
             // check if the one selected has already been done (check database)
             var data = null;
@@ -75,7 +78,15 @@ class PlaceService {
                         var json = JSON.stringify(result);
                         responsePlaceModels.push(JSON.parse(json));
                     });
-                    var responsePlaceModel = PlaceService.selectBestResultFromApi(responsePlaceModels);
+                    var responsePlaceModel = yield PlaceService.selectBestResultFromApi(responsePlaceModels);
+                    /** Save selected Place (avoid same places as a result) */
+                    var selectedPlace = {
+                        user: userId,
+                        placeId: responsePlaceModel.place_id
+                    };
+                    if ((yield PlaceService.saveSelectedPlace(selectedPlace)) == null) {
+                        return place_constants_1.PlaceRequestError.SAVE_SELECTED_PLACE;
+                    }
                     var generatedOptions = {
                         activityType: activity_service_1.default.fromActivityStringToEnum(type),
                         movingType: movingType,
@@ -129,11 +140,28 @@ class PlaceService {
         return "";
     }
     static selectBestResultFromApi(responses) {
-        if (responses.length == 0) {
-            throw new Error();
-        }
-        utilities_service_1.UtilitiesService.shuffleArray(responses);
-        return responses[0];
+        return __awaiter(this, void 0, void 0, function* () {
+            if (responses.length == 0) {
+                throw new Error();
+            }
+            responses.sort((a, b) => b.rating - a.rating);
+            var ids = [];
+            responses.forEach(element => {
+                ids.push(element.place_id);
+            });
+            var notAlreadySelected = yield PlaceService.getIdsNotAlreadySelected(ids);
+            if (notAlreadySelected.length == 0) {
+                // THE PERSON HAS USE 20 TOKEN FROM THE SAME PLACE WITH THE SAME REQUEST PARAMETERS 
+                // -> 
+                utilities_service_1.UtilitiesService.shuffleArray(responses);
+                notAlreadySelected = [responses[0].place_id];
+            }
+            var bestResult = responses.find(response => response.place_id == notAlreadySelected[0]);
+            if (!bestResult) {
+                throw Error();
+            }
+            return bestResult;
+        });
     }
     static canBeCasted(json) {
         return (json.hasOwnProperty('latitude') &&
@@ -162,6 +190,43 @@ class PlaceService {
             }
             catch (e) {
                 return null;
+            }
+        });
+    }
+    static saveSelectedPlace(selectedPlaceModel) {
+        return __awaiter(this, void 0, void 0, function* () {
+            try {
+                return yield selectedPlaceRepository.create(selectedPlaceModel);
+            }
+            catch (e) {
+                console.log(e);
+                return null;
+            }
+        });
+    }
+    static getIdsNotAlreadySelected(selectedIds) {
+        return __awaiter(this, void 0, void 0, function* () {
+            var notAlreadySelectedIds = [];
+            try {
+                console.log("selectedIds");
+                console.log(selectedIds);
+                // find documents in the collection that match the query
+                const query = { placeId: { $in: selectedIds } };
+                var results = yield selectedPlaceRepository.get(query);
+                console.log("results");
+                console.log(results);
+                // extract the IDs from the returned documents
+                const foundIds = results.map(doc => doc.placeId.toString());
+                console.log("foundIds");
+                console.log(foundIds);
+                // compare the original array with the found IDs to get the missing IDs
+                notAlreadySelectedIds = selectedIds.filter(id => !foundIds.includes(id.toString()));
+                console.log("notAlreadySelectedIds");
+                console.log(notAlreadySelectedIds);
+                return notAlreadySelectedIds;
+            }
+            catch (e) {
+                return [];
             }
         });
     }

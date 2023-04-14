@@ -117,6 +117,7 @@ export enum ApiError {
     PLACE_NOT_ACCEPTED,
     PLACE_GET_ACCEPTED,
     PLACE_NOT_REFUSED,
+    PLACE_SAVE_SELECTED,
 
     
     //AD
