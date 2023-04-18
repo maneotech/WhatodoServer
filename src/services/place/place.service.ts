@@ -3,7 +3,7 @@ import { ActivityStringsConstant } from "../../constants/place/activities.consta
 import { PlaceRequestError } from "../../constants/place/place.constants";
 import { IResponse } from "../../interfaces/request.interface";
 import { GeneratedOptionPlaceModel } from "../../models/place/generated.option.place.model";
-import { ActivityType, MovingType, PriceType, RequestPlaceModel } from "../../models/place/request.place.model";
+import { ActivityType, MovingType, RequestPlaceModel } from "../../models/place/request.place.model";
 import { ResponsePlaceModel } from "../../models/place/response.place.model";
 import { IShowedPlaceDocument, IShowedPlaceModel, ShowedPlaceModel } from "../../models/place/showed.place.model";
 import ShowedPlaceRepository from "../../repositories/place/place.repository";
@@ -26,44 +26,48 @@ export default class PlaceService {
         //1. prepare google map request the best as possible
 
 
-        const lat = requestPlaceModel.latitude;
-        const lng = requestPlaceModel.longitude;
+        //const lat = requestPlaceModel.latitude;
+        //const lng = requestPlaceModel.longitude;
+
+        const lat = 43.5297;
+        const lng = 5.4474;
         const location = lat + "," + lng;
         const movingType = PlaceService.selectOneMovingType(requestPlaceModel.movingTypes);
 
         const radius = PlaceService.getRadiusFromHourMinute(movingType, requestPlaceModel.maxHour, requestPlaceModel.maxMin);
         const opennow = true;
         var type = null;
-        var maxprice = "0";
+        //var maxprice = "0";
         var keyword = PlaceService.getKeyword();
 
         try {
             //type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
-            type = "restaurant";
+            type = "tourist_attraction";
         }
         catch {
             return PlaceRequestError.ACTIVITIES_EMPTY;
         }
 
-        try {
-            maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == PriceType.notFree ? "4" : "4";
-        }
-        catch {
-            return PlaceRequestError.PRICE_TYPE_EMPTY;
-        }
+        /* try {
+             maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == PriceType.notFree ? "4" : "4";
+         }
+         catch {
+             return PlaceRequestError.PRICE_TYPE_EMPTY;
+         }*/
 
 
 
         const googleApiKey = "AIzaSyBv2zOoqxBElmBJH4jFBieXnoDXqy_YRkw";
 
         //2. send google map request
-        const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=" +
+        const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?&type=" +
             type + "&location=" +
             location + "&radius=" +
             radius + "&opennow=" +
-            opennow + "&maxprice=" +
-            maxprice + "&keyword=" +
-            keyword + "&key=" +
+            opennow + /*"&maxprice=" +
+            maxprice + "&minprice=0" +
+             "&keyword=" +
+            keyword + */"&key=" +
             googleApiKey;
 
 
@@ -76,8 +80,15 @@ export default class PlaceService {
             data = JSON.parse(await PlaceService.fetchApi(url));
         }
         catch (error) {
+            console.log(error);
             return PlaceRequestError.FETCHING_API;
         }
+
+        console.log("data: " + data);
+        if (data.status == "INVALID_REQUEST") {
+            return PlaceRequestError.INVALID_REQUEST;
+        }
+        console.log("data.results: " + data.results);
 
         if (data.results) {
 
@@ -91,8 +102,10 @@ export default class PlaceService {
                     responsePlaceModels.push(JSON.parse(json));
                 });
 
+                var filteredResponsePlaceModels: ResponsePlaceModel[] = [];
+                filteredResponsePlaceModels = PlaceService.filterResponsesForBetterResults(type, responsePlaceModels);
 
-                var responsePlaceModel: ResponsePlaceModel = await PlaceService.selectBestResultFromApi(responsePlaceModels);
+                var responsePlaceModel: ResponsePlaceModel = await PlaceService.selectBestResultFromApi(filteredResponsePlaceModels);
 
                 /** Save selected Place (avoid same places as a result) */
                 var selectedPlace: ISelectedPlaceModel = {
@@ -106,7 +119,7 @@ export default class PlaceService {
                 var generatedOptions: GeneratedOptionPlaceModel = {
                     activityType: ActivityService.fromActivityStringToEnum(type),
                     movingType: movingType,
-                    priceType: maxprice == "0" ? PriceType.free : PriceType.notFree,
+                    //priceType: maxprice == "0" ? PriceType.free : PriceType.notFree,
                     travellingDuration: 10
                 }
                 var showedPlaceModel: IShowedPlaceModel = {
@@ -132,6 +145,26 @@ export default class PlaceService {
         //4. return the object
     }
 
+    static filterResponsesForBetterResults(activityString: String, responsePlaceModels: ResponsePlaceModel[]) : ResponsePlaceModel[]{
+        var newResponsePlaceModels = [];
+        if (activityString == "park") {
+            responsePlaceModels.forEach(response => {
+                if (response.types.includes("lodging") == false && 
+                    response.types.includes("bar") == false && 
+                    response.types.includes("store") == false && 
+                    response.types.includes("general_contractor") == false && 
+                    response.types.includes("travel_agency") == false){
+                    newResponsePlaceModels.push(response);
+                }
+            });
+        }
+        else {
+            newResponsePlaceModels = [...responsePlaceModels];
+        }
+
+        return newResponsePlaceModels;
+    }
+
     static getRadiusFromHourMinute(movingType: MovingType, hours: number, minutes: number): String {
         var radius: String;
         const totalMaxMinutes = hours * 60 + minutes;
@@ -155,7 +188,7 @@ export default class PlaceService {
         return radius;
     }
 
-    static getPriceType(priceTypes: PriceType[]): PriceType {
+    /*static getPriceType(priceTypes: PriceType[]): PriceType {
 
         if (priceTypes.length == 0) {
             throw Error();
@@ -163,7 +196,7 @@ export default class PlaceService {
 
         UtilitiesService.shuffleArray(priceTypes);
         return priceTypes[0];
-    }
+    }*/
 
     static getKeyword(): String {
         return "";
@@ -177,24 +210,25 @@ export default class PlaceService {
 
         responses.sort((a, b) => b.rating - a.rating);
 
-        var ids : String[] = [];
+        var ids: String[] = [];
         responses.forEach(element => {
             ids.push(element.place_id);
         });
 
         var notAlreadySelected = await PlaceService.getIdsNotAlreadySelected(ids);
-        if (notAlreadySelected.length == 0){
+        if (notAlreadySelected.length == 0) {
+            console.log("NOT ALREADY SELECTED, RANDOM RESULT");
             // THE PERSON HAS USE 20 TOKEN FROM THE SAME PLACE WITH THE SAME REQUEST PARAMETERS 
             UtilitiesService.shuffleArray(responses);
             notAlreadySelected = [responses[0].place_id];
         }
 
-        var bestResult =  responses.find(response => response.place_id == notAlreadySelected[0]);
+        var bestResult = responses.find(response => response.place_id == notAlreadySelected[0]);
 
-        if (!bestResult){
+        if (!bestResult) {
             throw Error();
         }
-        
+
         return bestResult;
     }
 
@@ -204,8 +238,8 @@ export default class PlaceService {
             json.hasOwnProperty('movingTypes') &&
             json.hasOwnProperty('maxHour') &&
             json.hasOwnProperty('maxMin') &&
-            json.hasOwnProperty('activities') &&
-            json.hasOwnProperty('priceTypes'));
+            json.hasOwnProperty('activities')/* &&
+            json.hasOwnProperty('priceTypes')*/);
     }
 
     static fetchApi(url: String): Promise<string> {
@@ -231,7 +265,9 @@ export default class PlaceService {
 
     static async saveSelectedPlace(selectedPlaceModel: ISelectedPlaceModel): Promise<ISelectedPlaceModel> {
         try {
-            return await selectedPlaceRepository.create(selectedPlaceModel);
+            var doc = await selectedPlaceRepository.create(selectedPlaceModel);
+            return doc;
+
         }
         catch (e) {
             console.log(e);
@@ -243,28 +279,15 @@ export default class PlaceService {
         var notAlreadySelectedIds: String[] = [];
 
         try {
-            
-            console.log("selectedIds");
-            console.log(selectedIds);
-
             // find documents in the collection that match the query
             const query = { placeId: { $in: selectedIds } };
             var results = await selectedPlaceRepository.get(query);
-            
-            console.log("results");
-            console.log(results);
 
             // extract the IDs from the returned documents
             const foundIds = results.map(doc => doc.placeId.toString());
 
-            console.log("foundIds");
-            console.log(foundIds);
-
             // compare the original array with the found IDs to get the missing IDs
             notAlreadySelectedIds = selectedIds.filter(id => !foundIds.includes(id.toString()));
-
-            console.log("notAlreadySelectedIds");
-            console.log(notAlreadySelectedIds);
 
             return notAlreadySelectedIds;
         }

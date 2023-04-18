@@ -1,6 +1,6 @@
 export class RequestPlaceModel {
     activities: ActivityType[];
-    priceTypes: PriceType[];
+    //priceTypes: PriceType[];
     movingTypes: MovingType[];
     latitude: number;
     longitude: number;
@@ -10,18 +10,18 @@ export class RequestPlaceModel {
 }
 
 export enum ActivityType {
-    culturel,
-    sport,
+    random,
+    discovering,
     restaurant,
     bar,
     shopping,
     snacking,
 }
 
-export enum PriceType {
+/*export enum PriceType {
     free,
     notFree,
-}
+}*/
 
 export enum MovingType {
     byCar,

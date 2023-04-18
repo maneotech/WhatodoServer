@@ -26,37 +26,41 @@ class PlaceService {
         return __awaiter(this, void 0, void 0, function* () {
             let response = place_constants_1.PlaceRequestError.NO_ERROR;
             //1. prepare google map request the best as possible
-            const lat = requestPlaceModel.latitude;
-            const lng = requestPlaceModel.longitude;
+            //const lat = requestPlaceModel.latitude;
+            //const lng = requestPlaceModel.longitude;
+            const lat = 43.5297;
+            const lng = 5.4474;
             const location = lat + "," + lng;
             const movingType = PlaceService.selectOneMovingType(requestPlaceModel.movingTypes);
             const radius = PlaceService.getRadiusFromHourMinute(movingType, requestPlaceModel.maxHour, requestPlaceModel.maxMin);
             const opennow = true;
             var type = null;
-            var maxprice = "0";
+            //var maxprice = "0";
             var keyword = PlaceService.getKeyword();
             try {
                 //type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
-                type = "restaurant";
+                type = "tourist_attraction";
             }
             catch (_a) {
                 return place_constants_1.PlaceRequestError.ACTIVITIES_EMPTY;
             }
-            try {
-                maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == request_place_model_1.PriceType.notFree ? "4" : "4";
-            }
-            catch (_b) {
-                return place_constants_1.PlaceRequestError.PRICE_TYPE_EMPTY;
-            }
+            /* try {
+                 maxprice = PlaceService.getPriceType(requestPlaceModel.priceTypes) == PriceType.notFree ? "4" : "4";
+             }
+             catch {
+                 return PlaceRequestError.PRICE_TYPE_EMPTY;
+             }*/
             const googleApiKey = "AIzaSyBv2zOoqxBElmBJH4jFBieXnoDXqy_YRkw";
             //2. send google map request
-            const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?type=" +
+            const url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?&type=" +
                 type + "&location=" +
                 location + "&radius=" +
                 radius + "&opennow=" +
-                opennow + "&maxprice=" +
-                maxprice + "&keyword=" +
-                keyword + "&key=" +
+                opennow + /*"&maxprice=" +
+            maxprice + "&minprice=0" +
+             "&keyword=" +
+            keyword + */
+                "&key=" +
                 googleApiKey;
             console.log(url);
             //3. parse the result and pick the best one as possible
@@ -66,8 +70,14 @@ class PlaceService {
                 data = JSON.parse(yield PlaceService.fetchApi(url));
             }
             catch (error) {
+                console.log(error);
                 return place_constants_1.PlaceRequestError.FETCHING_API;
             }
+            console.log("data: " + data);
+            if (data.status == "INVALID_REQUEST") {
+                return place_constants_1.PlaceRequestError.INVALID_REQUEST;
+            }
+            console.log("data.results: " + data.results);
             if (data.results) {
                 if (data.results.length == 0) {
                     return place_constants_1.PlaceRequestError.NO_RESULT;
@@ -78,7 +88,9 @@ class PlaceService {
                         var json = JSON.stringify(result);
                         responsePlaceModels.push(JSON.parse(json));
                     });
-                    var responsePlaceModel = yield PlaceService.selectBestResultFromApi(responsePlaceModels);
+                    var filteredResponsePlaceModels = [];
+                    filteredResponsePlaceModels = PlaceService.filterResponsesForBetterResults(type, responsePlaceModels);
+                    var responsePlaceModel = yield PlaceService.selectBestResultFromApi(filteredResponsePlaceModels);
                     /** Save selected Place (avoid same places as a result) */
                     var selectedPlace = {
                         user: userId,
@@ -90,7 +102,7 @@ class PlaceService {
                     var generatedOptions = {
                         activityType: activity_service_1.default.fromActivityStringToEnum(type),
                         movingType: movingType,
-                        priceType: maxprice == "0" ? request_place_model_1.PriceType.free : request_place_model_1.PriceType.notFree,
+                        //priceType: maxprice == "0" ? PriceType.free : PriceType.notFree,
                         travellingDuration: 10
                     };
                     var showedPlaceModel = {
@@ -112,6 +124,24 @@ class PlaceService {
             //4. return the object
         });
     }
+    static filterResponsesForBetterResults(activityString, responsePlaceModels) {
+        var newResponsePlaceModels = [];
+        if (activityString == "park") {
+            responsePlaceModels.forEach(response => {
+                if (response.types.includes("lodging") == false &&
+                    response.types.includes("bar") == false &&
+                    response.types.includes("store") == false &&
+                    response.types.includes("general_contractor") == false &&
+                    response.types.includes("travel_agency") == false) {
+                    newResponsePlaceModels.push(response);
+                }
+            });
+        }
+        else {
+            newResponsePlaceModels = [...responsePlaceModels];
+        }
+        return newResponsePlaceModels;
+    }
     static getRadiusFromHourMinute(movingType, hours, minutes) {
         var radius;
         const totalMaxMinutes = hours * 60 + minutes;
@@ -129,13 +159,15 @@ class PlaceService {
         }
         return radius;
     }
-    static getPriceType(priceTypes) {
+    /*static getPriceType(priceTypes: PriceType[]): PriceType {
+
         if (priceTypes.length == 0) {
             throw Error();
         }
-        utilities_service_1.UtilitiesService.shuffleArray(priceTypes);
+
+        UtilitiesService.shuffleArray(priceTypes);
         return priceTypes[0];
-    }
+    }*/
     static getKeyword() {
         return "";
     }
@@ -151,8 +183,8 @@ class PlaceService {
             });
             var notAlreadySelected = yield PlaceService.getIdsNotAlreadySelected(ids);
             if (notAlreadySelected.length == 0) {
+                console.log("NOT ALREADY SELECTED, RANDOM RESULT");
                 // THE PERSON HAS USE 20 TOKEN FROM THE SAME PLACE WITH THE SAME REQUEST PARAMETERS 
-                // -> 
                 utilities_service_1.UtilitiesService.shuffleArray(responses);
                 notAlreadySelected = [responses[0].place_id];
             }
@@ -169,8 +201,8 @@ class PlaceService {
             json.hasOwnProperty('movingTypes') &&
             json.hasOwnProperty('maxHour') &&
             json.hasOwnProperty('maxMin') &&
-            json.hasOwnProperty('activities') &&
-            json.hasOwnProperty('priceTypes'));
+            json.hasOwnProperty('activities') /* &&
+        json.hasOwnProperty('priceTypes')*/);
     }
     static fetchApi(url) {
         return new Promise((resolve, reject) => {
@@ -196,7 +228,8 @@ class PlaceService {
     static saveSelectedPlace(selectedPlaceModel) {
         return __awaiter(this, void 0, void 0, function* () {
             try {
-                return yield selectedPlaceRepository.create(selectedPlaceModel);
+                var doc = yield selectedPlaceRepository.create(selectedPlaceModel);
+                return doc;
             }
             catch (e) {
                 console.log(e);
@@ -208,21 +241,13 @@ class PlaceService {
         return __awaiter(this, void 0, void 0, function* () {
             var notAlreadySelectedIds = [];
             try {
-                console.log("selectedIds");
-                console.log(selectedIds);
                 // find documents in the collection that match the query
                 const query = { placeId: { $in: selectedIds } };
                 var results = yield selectedPlaceRepository.get(query);
-                console.log("results");
-                console.log(results);
                 // extract the IDs from the returned documents
                 const foundIds = results.map(doc => doc.placeId.toString());
-                console.log("foundIds");
-                console.log(foundIds);
                 // compare the original array with the found IDs to get the missing IDs
                 notAlreadySelectedIds = selectedIds.filter(id => !foundIds.includes(id.toString()));
-                console.log("notAlreadySelectedIds");
-                console.log(notAlreadySelectedIds);
                 return notAlreadySelectedIds;
             }
             catch (e) {

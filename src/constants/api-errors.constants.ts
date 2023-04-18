@@ -118,7 +118,7 @@ export enum ApiError {
     PLACE_GET_ACCEPTED,
     PLACE_NOT_REFUSED,
     PLACE_SAVE_SELECTED,
-
+    PLACE_INVALID_REQUEST,
     
     //AD
     AD_BODY_EMPTY = 750,

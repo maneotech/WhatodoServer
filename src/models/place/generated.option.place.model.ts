@@ -1,8 +1,8 @@
-import { ActivityType, MovingType, PriceType } from "./request.place.model";
+import { ActivityType, MovingType } from "./request.place.model";
 
 export class GeneratedOptionPlaceModel {
     activityType: ActivityType;
-    priceType: PriceType;
+    //priceType: PriceType;
     movingType: MovingType;
     travellingDuration: number;
 

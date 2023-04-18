@@ -1,9 +1,13 @@
 export const ActivityStringsConstant = {
 
-    SPORT: [] = ["bowling_alley", "stadium", "park", "gym"],
+    DISCOVERING: [] = ["tourist_attraction", /*"bowling_alley", "stadium", "gym"*/],
     RESTAURANT: [] = ["restaurant"],
     BAR: [] = ["bar"],
-    CULTUREL: [] = ["amusement_park",
+    RANDOM: [] = ["restaurant", "bar", "bakery", "cafe",
+        "tourist_attraction",
+        "shoe_store", "jewelry_store", "home_goods_store",
+        "furniture_store", "clothing_store"
+    /*"amusement_park",
         "aquarium",
         "art_gallery",
         "book_store",
@@ -25,9 +29,9 @@ export const ActivityStringsConstant = {
         "tourist_attraction",
         "university",
         "zoo",
-        "casino",
+        "casino"*/,
     ],
 
     SNACKING: [] = ["bakery", "cafe"],
-    SHOPPING: [] = ["shopping_mall", "shoe_store", "jewelry_store", "home_goods_store", "furniture_store", "department_store", "clothing_store"]
+    SHOPPING: [] = ["shoe_store", "jewelry_store", "home_goods_store", "furniture_store", "clothing_store"]
 }

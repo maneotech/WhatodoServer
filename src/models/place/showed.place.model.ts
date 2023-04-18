@@ -4,7 +4,6 @@ import { db } from "../../services/databases.service";
 import { MongooseCustomSchema } from "../../services/mongoose.service";
 import { UserModel } from "../user/user.model";
 import { GeneratedOptionPlaceModel } from "./generated.option.place.model";
-import { ActivityType, MovingType, PriceType } from "./request.place.model";
 import { ResponsePlaceModel } from "./response.place.model";
 
 const schema = new MongooseCustomSchema({

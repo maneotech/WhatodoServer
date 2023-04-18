@@ -12,8 +12,8 @@ export default class ActivityService {
             return ActivityType.bar;
         }
 
-        else if (ActivityStringsConstant.SPORT.includes(activity)) {
-            return ActivityType.sport;
+        else if (ActivityStringsConstant.DISCOVERING.includes(activity)) {
+            return ActivityType.discovering;
         }
         else if (ActivityStringsConstant.SNACKING.includes(activity)) {
             return ActivityType.snacking;
@@ -21,7 +21,7 @@ export default class ActivityService {
         else if (ActivityStringsConstant.SHOPPING.includes(activity)) {
             return ActivityType.shopping;
         }
-        else return ActivityType.culturel;
+        else return ActivityType.random;
 
     }
 
@@ -47,12 +47,12 @@ export default class ActivityService {
                 types = ActivityStringsConstant.BAR;
                 break;
 
-            case ActivityType.culturel:
-                types = ActivityStringsConstant.CULTUREL
+            case ActivityType.random:
+                types = ActivityStringsConstant.RANDOM
                 break;
 
-            case ActivityType.sport:
-                types = ActivityStringsConstant.SPORT;
+            case ActivityType.discovering:
+                types = ActivityStringsConstant.DISCOVERING;
                 break;
 
             case ActivityType.snacking:

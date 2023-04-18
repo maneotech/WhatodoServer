@@ -11,8 +11,8 @@ class ActivityService {
         else if (activities_constants_1.ActivityStringsConstant.BAR.includes(activity)) {
             return request_place_model_1.ActivityType.bar;
         }
-        else if (activities_constants_1.ActivityStringsConstant.SPORT.includes(activity)) {
-            return request_place_model_1.ActivityType.sport;
+        else if (activities_constants_1.ActivityStringsConstant.DISCOVERING.includes(activity)) {
+            return request_place_model_1.ActivityType.discovering;
         }
         else if (activities_constants_1.ActivityStringsConstant.SNACKING.includes(activity)) {
             return request_place_model_1.ActivityType.snacking;
@@ -21,7 +21,7 @@ class ActivityService {
             return request_place_model_1.ActivityType.shopping;
         }
         else
-            return request_place_model_1.ActivityType.culturel;
+            return request_place_model_1.ActivityType.random;
     }
     static fromEnumToActivityString(activities) {
         var type = "";
@@ -38,11 +38,11 @@ class ActivityService {
             case request_place_model_1.ActivityType.bar:
                 types = activities_constants_1.ActivityStringsConstant.BAR;
                 break;
-            case request_place_model_1.ActivityType.culturel:
-                types = activities_constants_1.ActivityStringsConstant.CULTUREL;
+            case request_place_model_1.ActivityType.random:
+                types = activities_constants_1.ActivityStringsConstant.RANDOM;
                 break;
-            case request_place_model_1.ActivityType.sport:
-                types = activities_constants_1.ActivityStringsConstant.SPORT;
+            case request_place_model_1.ActivityType.discovering:
+                types = activities_constants_1.ActivityStringsConstant.DISCOVERING;
                 break;
             case request_place_model_1.ActivityType.snacking:
                 types = activities_constants_1.ActivityStringsConstant.SNACKING;

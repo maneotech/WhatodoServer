@@ -18,5 +18,6 @@ export const PlaceRequestError = {
     GET_ACCEPTED_ERROR: { success: false, data: null, message: "get accepted places error", error: ApiError.PLACE_GET_ACCEPTED, status: HttpStatusCode.InternalServerError } as IResponse,
     REFUSE_ERROR: { success: false, data: null, message: "refuse place error", error: ApiError.PLACE_NOT_REFUSED, status: HttpStatusCode.InternalServerError } as IResponse,
     SAVE_SELECTED_PLACE: { success: false, data: null, message: "save selected place error", error: ApiError.PLACE_SAVE_SELECTED, status: HttpStatusCode.InternalServerError } as IResponse,
+    INVALID_REQUEST: { success: false, data: null, message: "invalid request place error", error: ApiError.PLACE_INVALID_REQUEST, status: HttpStatusCode.InternalServerError } as IResponse,
 
 }
