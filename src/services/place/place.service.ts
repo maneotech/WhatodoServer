@@ -41,8 +41,8 @@ export default class PlaceService {
         var keyword = PlaceService.getKeyword();
 
         try {
-            //type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
-            type = "tourist_attraction";
+            type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
+            //type = "tourist_attraction";
         }
         catch {
             return PlaceRequestError.ACTIVITIES_EMPTY;

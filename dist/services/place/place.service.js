@@ -38,8 +38,8 @@ class PlaceService {
             //var maxprice = "0";
             var keyword = PlaceService.getKeyword();
             try {
-                //type = ActivityService.fromEnumToActivityString(requestPlaceModel.activities);
-                type = "tourist_attraction";
+                type = activity_service_1.default.fromEnumToActivityString(requestPlaceModel.activities);
+                //type = "tourist_attraction";
             }
             catch (_a) {
                 return place_constants_1.PlaceRequestError.ACTIVITIES_EMPTY;
