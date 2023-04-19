@@ -7,7 +7,7 @@ export async function getHome(req: Request, res: Response) {
     const user = req.user;
     const response = HomeRequestError.NO_ERROR;
 
-    const result = await HomeService.getHome(user._id);
+    const result = await HomeService.getHome(user);
     response.data = result;
 
     return RequestService.send(res, response);

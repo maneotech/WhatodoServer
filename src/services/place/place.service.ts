@@ -119,8 +119,10 @@ export default class PlaceService {
                 var generatedOptions: GeneratedOptionPlaceModel = {
                     activityType: ActivityService.fromActivityStringToEnum(type),
                     movingType: movingType,
+
+                    maxHour: requestPlaceModel.maxHour,
+                    maxMin: requestPlaceModel.maxMin,
                     //priceType: maxprice == "0" ? PriceType.free : PriceType.notFree,
-                    travellingDuration: 10
                 }
                 var showedPlaceModel: IShowedPlaceModel = {
                     user: userId,

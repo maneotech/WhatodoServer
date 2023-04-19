@@ -4,7 +4,6 @@ export class GeneratedOptionPlaceModel {
     activityType: ActivityType;
     //priceType: PriceType;
     movingType: MovingType;
-    travellingDuration: number;
-
-    
+    maxHour: number;
+    maxMin: number;
 }
