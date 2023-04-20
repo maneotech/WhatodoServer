@@ -1,11 +1,13 @@
+import { IUserModel } from "../user/user.model";
+
 export class HomeResponseModel {
     lastSponsorshipEmail : String;
     enableAdVideo: boolean;
-    token: number;
+    user: IUserModel;
 
-     constructor(lastSponsorshipEmail: String, enableAdVideo: boolean, token: number){
+     constructor(lastSponsorshipEmail: String, enableAdVideo: boolean, user: IUserModel){
         this.lastSponsorshipEmail = lastSponsorshipEmail;
         this.enableAdVideo = enableAdVideo;
-        this.token = token;
+        this.user = user;
      }
 }

@@ -16,7 +16,7 @@ export default class HomeService {
         var enableAdVideo: boolean = await  AdVideoService.isLastVideoDelayRespected(user._id);
 
 
-        var homeResponse = new HomeResponseModel (lastSponsorshipFirstname, enableAdVideo, user.token);
+        var homeResponse = new HomeResponseModel (lastSponsorshipFirstname, enableAdVideo, user);
 
         return homeResponse;
     }
