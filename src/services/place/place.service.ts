@@ -26,11 +26,10 @@ export default class PlaceService {
         //1. prepare google map request the best as possible
 
 
-        //const lat = requestPlaceModel.latitude;
-        //const lng = requestPlaceModel.longitude;
+        const lat = requestPlaceModel.latitude;
+        const lng = requestPlaceModel.longitude;
 
-        const lat = 43.5297;
-        const lng = 5.4474;
+        
         const location = lat + "," + lng;
         const movingType = PlaceService.selectOneMovingType(requestPlaceModel.movingTypes);
 
